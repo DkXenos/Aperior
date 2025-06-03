@@ -1,0 +1,20 @@
+/* Additional styles specific to catalogue if needed */
+.contain-layout { container-type: inline-size; } /* For carousel layout containment */
+.contain-paint { container-type: paint; } /* For carousel paint containment */
+.text-shadow-pink { text-shadow: 0 0 10px #ff5cf4; }
+.hover\:text-shadow-pink:hover { text-shadow: 0 0 10px #ff5cf4; }
+
+/* You might also want to include font definitions if they are not in the parent styles.css */
+/* For example, if ../css/styles.css doesn't cover everything needed for this page: */
+/*
+@font-face {
+    font-family: "title";
+    src: url("../assets/fonts/CinzelDecorative-Bold.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.apply-custom-title-font {
+    font-family: "title", sans-serif;
+}
+*/

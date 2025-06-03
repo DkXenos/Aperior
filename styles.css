@@ -1,0 +1,42 @@
+@font-face {
+    font-family: "title"; /* This is the name you'll use */
+    src: url("./assets/fonts/CinzelDecorative-Bold.ttf") format("truetype"); /* Path relative to styles.css */
+    font-weight: normal;
+    font-style: normal;
+}
+
+.apply-custom-title-font {
+    font-family: "title", sans-serif; /* Applies your custom font, with a fallback */
+}
+
+.text-glow-yellow {
+    text-shadow: 0 0 5px #ffff, 0 0 10px #fde047, 0 0 15px #fde047;
+}
+
+body {
+    margin: 0;
+    background-color: #FFF7AD;
+    overflow-x: hidden;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.02); }
+}
+@keyframes pulse-medium {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.03); }
+}
+@keyframes pulse-fast {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.04); }
+}
+.animate-pulse-slow {
+    animation: pulse-slow 15s infinite ease-in-out;
+}
+.animate-pulse-medium {
+    animation: pulse-medium 12s infinite ease-in-out;
+}
+.animate-pulse-fast {
+    animation: pulse-fast 10s infinite ease-in-out;
+}

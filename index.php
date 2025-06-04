@@ -1,4 +1,4 @@
-<?php session_start(); // Add this at the very beginning ?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

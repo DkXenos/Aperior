@@ -29,7 +29,7 @@ if ($result) {
     $result->free();
 }
 $stmt->close();
-// $conn->close(); // Connection will be closed by process_payment.php or if user navigates away
+
 
 ?>
 <!DOCTYPE html>

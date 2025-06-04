@@ -1,6 +1,6 @@
 <?php
 session_start();
-// require 'db_connect.php'; // Not needed for placeholder
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

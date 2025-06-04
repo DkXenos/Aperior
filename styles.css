@@ -1,12 +1,12 @@
 @font-face {
-    font-family: "title"; /* This is the name you'll use */
-    src: url("./assets/fonts/CinzelDecorative-Bold.ttf") format("truetype"); /* Path relative to styles.css */
+    font-family: "title"; 
+    src: url("./assets/fonts/CinzelDecorative-Bold.ttf") format("truetype"); 
     font-weight: normal;
     font-style: normal;
 }
 
 .apply-custom-title-font {
-    font-family: "title", sans-serif; /* Applies your custom font, with a fallback */
+    font-family: "title", sans-serif; 
 }
 
 .text-glow-yellow {

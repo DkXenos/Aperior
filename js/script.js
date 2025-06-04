@@ -1,4 +1,3 @@
-// filepath: /Users/jaysn/Downloads/WebProg/ALP-next/alp-webprog/alp-next/src/app/REMAKE/js/script.js
 document.addEventListener('DOMContentLoaded', () => {
     const tree = document.getElementById('tree');
     const sun = document.getElementById('sun');

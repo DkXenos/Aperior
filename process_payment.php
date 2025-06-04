@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $user_id = $_SESSION['user_id'];
 
-// Start transaction
+
 $conn->begin_transaction();
 
 try {
-    // 1. Get items from user's cart
+    
     $cart_items_stmt = $conn->prepare("SELECT game_id, quantity FROM cart_items WHERE user_id = ?");
     $cart_items_stmt->bind_param("i", $user_id);
     $cart_items_stmt->execute();
@@ -28,14 +28,14 @@ try {
 
     if ($cart_result->num_rows === 0) {
         $_SESSION['payment_message'] = "Your cart is empty. Nothing to process.";
-        $conn->rollback(); // Rollback if cart is empty
+        $conn->rollback(); 
         header("Location: payment.php");
         exit();
     }
 
-    // 2. Add each item to user_inventory (simplified: adds each game once, ignores quantity for ownership)
-    // More complex logic could handle multiple copies if your game store supports that.
-    // For simplicity, we assume owning a game means having at least one copy.
+    
+    
+    
     $insert_inventory_stmt = $conn->prepare("INSERT IGNORE INTO user_inventory (user_id, game_id, purchase_date) VALUES (?, ?, NOW())");
     
     while ($item = $cart_result->fetch_assoc()) {
@@ -47,7 +47,7 @@ try {
     $insert_inventory_stmt->close();
     $cart_items_stmt->close();
 
-    // 3. Clear the user's cart
+    
     $clear_cart_stmt = $conn->prepare("DELETE FROM cart_items WHERE user_id = ?");
     $clear_cart_stmt->bind_param("i", $user_id);
     if (!$clear_cart_stmt->execute()) {
@@ -55,16 +55,16 @@ try {
     }
     $clear_cart_stmt->close();
 
-    // If all operations were successful, commit the transaction
+    
     $conn->commit();
     $_SESSION['payment_message'] = "Payment successful! Games have been added to your inventory.";
-    header("Location: inventory.php"); // Redirect to inventory page
+    header("Location: inventory.php"); 
 
 } catch (Exception $e) {
-    $conn->rollback(); // Rollback on any error
+    $conn->rollback(); 
     error_log("Payment processing error for user $user_id: " . $e->getMessage());
     $_SESSION['payment_message'] = "An error occurred during payment processing. Please try again. Details: " . $e->getMessage();
-    header("Location: payment.php"); // Redirect back to payment page with error
+    header("Location: payment.php"); 
 } finally {
     if (isset($conn)) {
         $conn->close();

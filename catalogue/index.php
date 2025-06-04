@@ -1,10 +1,10 @@
 <?php
-session_start(); // Start session for user-specific data
-require '../db_connect.php'; // Connect to the database (path is one level up)
+session_start(); 
+require '../db_connect.php'; 
 
-// Fetch games from the database
+
 $games_all = [];
-// Include the new is_featured column in your SELECT query
+
 $result = $conn->query("SELECT id, title, description, price, image_url, genre, release_date, is_featured FROM games ORDER BY release_date DESC");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
@@ -13,18 +13,18 @@ if ($result) {
     $result->free();
 }
 
-// Check wishlist and cart status for each game if user is logged in
+
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     foreach ($games_all as $key => $game) {
-        // Check wishlist
+        
         $stmt_wish = $conn->prepare("SELECT id FROM wishlist_items WHERE user_id = ? AND game_id = ?");
         $stmt_wish->bind_param("ii", $user_id, $game['id']);
         $stmt_wish->execute();
         $games_all[$key]['in_wishlist'] = $stmt_wish->get_result()->num_rows > 0;
         $stmt_wish->close();
 
-        // Check cart
+        
         $stmt_cart = $conn->prepare("SELECT quantity FROM cart_items WHERE user_id = ? AND game_id = ?");
         $stmt_cart->bind_param("ii", $user_id, $game['id']);
         $stmt_cart->execute();
@@ -39,7 +39,7 @@ if (isset($_SESSION['user_id'])) {
         $stmt_cart->close();
     }
 } else {
-    // If user is not logged in, mark all as not in wishlist/cart
+    
     foreach ($games_all as $key => $game) {
         $games_all[$key]['in_wishlist'] = false;
         $games_all[$key]['in_cart'] = false;
@@ -47,22 +47,22 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-// Prepare data for carousel: featured games first, then fallback
+
 $carousel_games_data = [];
 foreach ($games_all as $game) {
-    if (!empty($game['is_featured'])) { // This checks if is_featured is TRUE (1)
+    if (!empty($game['is_featured'])) { 
         $carousel_games_data[] = $game;
     }
 }
 
-// If no games are specifically marked as featured, or fewer than 5,
-// use the first few (up to 5) from the main list as a fallback for the carousel.
-// Or, if you want *only* featured games, you can skip this fallback.
-// For this example, we'll ensure the carousel has some content if possible.
+
+
+
+
 if (empty($carousel_games_data) && !empty($games_all)) {
     $carousel_games_data = array_slice($games_all, 0, min(5, count($games_all)));
 } elseif (!empty($carousel_games_data) && count($carousel_games_data) > 5) {
-    // If more than 5 featured games, you might want to limit them or let the carousel handle more
+    
     $carousel_games_data = array_slice($carousel_games_data, 0, 5); // Example: limit to 5
 }
 
@@ -78,10 +78,10 @@ $conn->close();
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="../styles.css"> <!-- Corrected path to main styles -->
-    <link rel="stylesheet" href="./styles.css">   <!-- Link to catalogue-specific styles -->
+    <link rel="stylesheet" href="../styles.css"> 
+    <link rel="stylesheet" href="./styles.css">   
     <style>
-        /* Basic styles for buttons, you can enhance these */
+        
         .action-button {
             padding: 8px 12px;
             border-radius: 6px;
@@ -90,16 +90,16 @@ $conn->close();
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 8px;
-            display: inline-block; /* Or flex for icon + text */
+            display: inline-block; 
             font-size: 0.875rem;
         }
-        .wishlist-btn { background-color: #FF69B4; /* Hot Pink */ }
-        .wishlist-btn:hover { background-color: #FF1493; /* Deep Pink */ }
-        .wishlist-btn.in-wishlist { background-color: #C71585; /* Medium Violet Red */ }
+        .wishlist-btn { background-color: #FF69B4; }
+        .wishlist-btn:hover { background-color: #FF1493; }
+        .wishlist-btn.in-wishlist { background-color: #C71585;  }
 
-        .cart-btn { background-color: #4CAF50; /* Green */ }
+        .cart-btn { background-color: #4CAF50;  }
         .cart-btn:hover { background-color: #45a049; }
-        .cart-btn.in-cart { background-color: #FFA500; /* Orange - indicates in cart, could link to cart or show quantity */ }
+        .cart-btn.in-cart { background-color: #FFA500; }
     </style>
 </head>
 <body class="bg-[#FFA9F9]">
@@ -123,13 +123,13 @@ $conn->close();
                          class="absolute top-full right-0 mt-2 w-56 md:w-60
                                 bg-white/95 backdrop-blur-md p-3 md:p-4 rounded-xl shadow-2xl space-y-1
                                 opacity-0 pointer-events-none origin-top-right z-[60]"> 
-                    <a href="../index.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Home</a>
-                    <a href="#catalog" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Catalog</a>
-                    <a href="../inventory.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">My Inventory</a>
-                    <a href="../wishlist.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Wishlist</a>
-                    <a href="../cart.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Shopping Cart</a>
-                    <a href="../friends.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Friends</a>
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="../index.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Home</a>
+                        <a href="#catalog" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Catalog</a>
+                        <a href="#inventory" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Inventory</a>
+                        <a href="#friends" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Friends</a>
+                        <a href="../wishlist.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Wishlist</a>
+                        <a href="../cart.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Shopping Cart</a>
+                        <?php if (isset($_SESSION['user_id'])): ?>
                             <div class="border-t border-pink-200 my-1"></div>
                             <a href="../logout.php" class="catalogue-nav-link block text-pink-700 hover:text-pink-900 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100 font-medium">Logout</a>
                         <?php endif; ?>
@@ -146,24 +146,24 @@ $conn->close();
                         <p class="text-sm sm:text-base md:text-lg text-[#ff1cf0] mt-1 md:mt-2 text-shadow-pink">Discover the hottest titles and player favorites</p>
                     </div>
                     <div id="gameCarouselContainer" class="h-[450px] md:h-[550px] lg:h-[600px] contain-paint contain-layout isolate overflow-hidden">
-                        <!-- Game Carousel Structure -->
+                        
                         <div class="relative w-full max-w-5xl mx-auto">
                             <button id="carouselPrevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-[#ffa9f9] text-white rounded-full p-3 shadow-lg hover:bg-[#ff8bf0] transition-all hover:scale-110" aria-label="Previous game">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                             </button>
                             <div class="overflow-hidden contain-layout contain-paint">
                                 <div id="carouselTrack" class="flex items-center transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] py-16" style="perspective: 1000px; will-change: transform;">
-                                    <!-- Game cards will be injected here by JavaScript using the $games_json data -->
+                                    
                                 </div>
                             </div>
                             <button id="carouselNextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-[#ffa9f9] text-white rounded-full p-3 shadow-lg hover:bg-[#ff8bf0] transition-all hover:scale-110" aria-label="Next game">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                             </button>
                             <div id="carouselDots" class="flex justify-center mt-6 space-x-2">
-                                <!-- Dots will be injected here -->
+                                
                             </div>
                         </div>
-                        <!-- End Game Carousel Structure -->
+                        
                     </div>
                 </div>
             </section>
@@ -179,7 +179,7 @@ $conn->close();
                             <div class="bg-pink-200 rounded-lg shadow-xl p-4">
                                 <h3 class="text-xl font-bold text-[#ff5cf4] mb-4">Categories</h3>
                                 <div class="space-y-2 category-dropdown-container">
-                                    <!-- CategoryDropdowns will be injected here -->
+                                    
                                 </div>
                             </div>
                         </div>
@@ -191,7 +191,7 @@ $conn->close();
                                 </div>
                                 <div class="p-4 h-[550px] overflow-y-auto">
                                     <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        <!-- Game grid items will be injected here by JavaScript using $games_json -->
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -203,9 +203,9 @@ $conn->close();
     </div>
     
     <script>
-        // Make PHP game data available to JavaScript
-        const gamesData = <?php echo json_encode($games_all); ?>; // Use $games_all for the grid
-        const carouselData = <?php echo json_encode($carousel_games_data); ?>; // Use $carousel_games_data for the carousel
+        
+        const gamesData = <?php echo json_encode($games_all); ?>; 
+        const carouselData = <?php echo json_encode($carousel_games_data); ?>; 
         const isUserLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
         const userId = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
     </script>

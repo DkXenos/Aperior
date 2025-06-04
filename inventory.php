@@ -46,7 +46,7 @@ $conn->close();
             <h1 class="text-3xl font-bold text-pink-600 apply-custom-title-font">My Games Inventory</h1>
         </div>
 
-        <?php if (isset($_SESSION['payment_message'])): // Display message from payment processing ?>
+        <?php if (isset($_SESSION['payment_message'])): ?>
             <div class="mb-4 p-3 rounded-md bg-green-100 text-green-700">
                 <?php echo $_SESSION['payment_message']; unset($_SESSION['payment_message']); ?>
             </div>

@@ -1,19 +1,19 @@
 <?php
 session_start();
-require 'db_connect.php'; // Include your database connection
+require 'db_connect.php'; //
 
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $email = $_POST['email']; // Optional: add email field
+    $email = $_POST['email']; 
 
-    // Basic validation (you should add more comprehensive validation)
+    
     if (empty($username) || empty($password) || empty($email)) {
         $message = "Please fill in all fields.";
     } else {
-        // Check if username or email already exists
+        
         $stmt_check = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt_check->bind_param("ss", $username, $email);
         $stmt_check->execute();
@@ -22,10 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt_check->num_rows > 0) {
             $message = "Username or email already taken.";
         } else {
-            // Hash the password
+            
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insert new user
+            
             $stmt_insert = $conn->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
             $stmt_insert->bind_param("sss", $username, $hashed_password, $email);
 
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Aprerior</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./styles.css"> <!-- Assuming styles.css is in the root -->
+    <link rel="stylesheet" href="./styles.css"> 
 </head>
 <body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] flex items-center justify-center min-h-screen">
     <div class="bg-white/90 backdrop-blur-md p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-md">

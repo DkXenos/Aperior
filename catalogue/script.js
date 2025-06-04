@@ -1,12 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Element Selectors ---
-    // const mobileMenuButton = document.getElementById('mobileMenuButton'); // Removed
-    // const mobileMenuNav = document.getElementById('mobileMenuNav'); // Removed
-    // const mobileMenuIconOpen = document.getElementById('mobileMenuIconOpen'); // Removed
-    // const mobileMenuIconClose = document.getElementById('mobileMenuIconClose'); // Removed
-    
     const dropdownContainer = document.querySelector('.category-dropdown-container');
     
     const carouselTrack = document.getElementById('carouselTrack');
@@ -24,18 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const catalogTitle = document.getElementById('catalogTitle');
     const categoriesSidebar = document.getElementById('categoriesSidebar');
 
-    // --- New Catalogue Popup Menu Elements ---
     const catalogueMenuButton = document.getElementById('catalogueMenuButton');
     const cataloguePopupMenu = document.getElementById('cataloguePopupMenu');
     const catalogueMenuIconPath = document.getElementById('catalogueMenuIconPath');
     let isCataloguePopupMenuOpen = false;
     let cataloguePopupTimeline = null;
 
-    // --- Catalogue Popup Menu Logic ---
     if (cataloguePopupMenu && catalogueMenuButton && catalogueMenuIconPath) {
         cataloguePopupTimeline = gsap.timeline({
             paused: true,
-            onStart: () => { // Use onStart to set pointerEvents when opening
+            onStart: () => { 
                 if (isCataloguePopupMenuOpen && cataloguePopupMenu) {
                     gsap.set(cataloguePopupMenu, { pointerEvents: 'auto' });
                 }
@@ -48,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         cataloguePopupTimeline.fromTo(cataloguePopupMenu,
-            { autoAlpha: 0, y: -10, scale: 0.95 }, // Adjusted for dropdown from top
+            { autoAlpha: 0, y: -10, scale: 0.95 }, 
             { autoAlpha: 1, y: 0, scale: 1, duration: 0.25, ease: 'power2.out' }
         );
 
@@ -60,14 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
             isCataloguePopupMenuOpen = !isCataloguePopupMenuOpen;
             updateCatalogueMenuIcon();
             if (isCataloguePopupMenuOpen) {
-                // No need to set pointerEvents here, onStart of timeline handles it
                 cataloguePopupTimeline.play();
             } else {
-                gsap.set(cataloguePopupMenu, { pointerEvents: 'none' }); // Set immediately for closing
+                gsap.set(cataloguePopupMenu, { pointerEvents: 'none' }); 
                 if (cataloguePopupTimeline.progress() > 0 || cataloguePopupTimeline.isActive()) {
                     cataloguePopupTimeline.reverse();
                 } else {
-                     // If timeline never played (e.g. closed before animation finished once)
                     gsap.set(cataloguePopupMenu, { autoAlpha: 0, pointerEvents: 'none' });
                 }
             }
@@ -92,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.addEventListener('mousedown', handleCatalogueClickOutside);
 
-        // Close popup when an anchor link inside it is clicked
         cataloguePopupMenu.querySelectorAll('a.catalogue-nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 if (isCataloguePopupMenuOpen) {
@@ -104,13 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                          gsap.set(cataloguePopupMenu, { autoAlpha: 0, pointerEvents: 'none' });
                     }
-                    // For anchor links like #catalog, smooth scroll if desired
                     const targetId = link.getAttribute('href');
                     if (targetId && targetId.startsWith('#')) {
                         const targetElement = document.querySelector(targetId);
                         if (targetElement) {
-                            // Basic scroll, replace with smooth scroll if GSAP ScrollToPlugin is used
-                            // window.scrollTo({ top: targetElement.offsetTop - header.offsetHeight, behavior: 'smooth' });
                         }
                     }
                 }
@@ -118,10 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Remove Old Mobile Menu Logic ---
-    // The block from "let mobileMenuOpen = false;" down to its event listener is removed.
-
-    // --- Category Dropdown ---
     const categoryData = [
         { title: "Action", items: ["Adventure", "FPS", "Third-person", "Fighting"] },
         { title: "Adventure", items: ["Open World", "Puzzle", "Platformer"] },
@@ -186,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // --- Unified Game Card HTML Creation ---
     function createGameCardHTML(game, isCarouselCard = false) {
         const wishlistBtnClass = game.in_wishlist ? 'in-wishlist' : '';
         const wishlistBtnText = game.in_wishlist ? 'In Wishlist' : 'Add to Wishlist';
@@ -247,22 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Game Carousel (using gamesData) ---
     if (carouselTrack && carouselDotsContainer && carouselPrevBtn && carouselNextBtn) {
         const cardWidth = 320; 
         let currentCarouselIndex = 0;
         let autoScrollInterval;
-        let carouselGames = []; // To store the games for the carousel
+        let carouselGames = []; 
 
         function initializeCarouselData() {
-            // Use the new carouselData passed from PHP
             if (typeof carouselData !== 'undefined' && carouselData.length > 0) {
                 carouselGames = carouselData;
             } else {
-                // Fallback if carouselData is empty for some reason, though PHP should handle this
-                // Or, if you prefer the carousel to be empty if no featured games,
-                // you can simply set carouselGames = [] here.
-                // For robustness, let's keep a fallback to gamesData if carouselData is unexpectedly empty.
                 if (typeof gamesData !== 'undefined' && gamesData.length > 0) {
                     carouselGames = gamesData.slice(0, Math.min(5, gamesData.length));
                 } else {
@@ -356,7 +331,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Game Grid (using gamesData) ---
     function renderGameGrid() {
         if (gameGrid) {
             if (typeof gamesData !== 'undefined' && gamesData.length > 0) {
@@ -368,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderGameGrid(); 
 
-    // --- Event Listeners for Wishlist/Cart Buttons ---
     function addEventListenersToButtons() {
         document.querySelectorAll('.wishlist-btn').forEach(button => {
             button.addEventListener('click', handleWishlistAction);
@@ -463,7 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- GSAP Animations ---
     if(header) gsap.from(header, { y: -60, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 });
     if(featuredTitle) gsap.from(featuredTitle, { y: 40, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.4 });
     if(gameCarouselContainer) gsap.from(gameCarouselContainer, { opacity: 0, scale: 0.9, duration: 0.8, ease: 'power3.out', delay: 0.6 });

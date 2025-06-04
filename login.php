@@ -1,11 +1,11 @@
 <?php
 session_start();
-require 'db_connect.php'; // Include your database connection
+require 'db_connect.php'; 
 
 $message = '';
 
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.php"); // Redirect if already logged in
+    header("Location: index.php"); 
     exit();
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                header("Location: index.php"); // Redirect to homepage or dashboard
+                header("Location: index.php"); 
                 exit();
             } else {
                 $message = "Invalid username or password.";
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Aprerior</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./styles.css"> <!-- Assuming styles.css is in the root -->
+    <link rel="stylesheet" href="./styles.css"> 
 </head>
 <body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] flex items-center justify-center min-h-screen">
     <div class="bg-white/90 backdrop-blur-md p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-md">

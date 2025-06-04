@@ -3,7 +3,7 @@ session_start();
 require 'db_connect.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // Redirect to login if not logged in
+
     exit();
 }
 
@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $cart_items = [];
 $total_price = 0;
 
-// Fetch cart items for the current user
+
 $stmt = $conn->prepare(
     "SELECT g.id as game_id, g.title, g.price, g.image_url, ci.quantity 
      FROM cart_items ci 

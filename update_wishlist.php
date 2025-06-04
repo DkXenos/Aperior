@@ -2,7 +2,7 @@
 session_start();
 require 'db_connect.php';
 
-header('Content-Type: application/json'); // Important for AJAX responses
+header('Content-Type: application/json'); 
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in.']);
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $user_id = $_SESSION['user_id'];
 $game_id = isset($_POST['game_id']) ? (int)$_POST['game_id'] : 0;
-$action = isset($_POST['action']) ? $_POST['action'] : ''; // 'add' or 'remove'
+$action = isset($_POST['action']) ? $_POST['action'] : ''; 
 
 if ($game_id <= 0) {
     echo json_encode(['success' => false, 'message' => 'Invalid game ID.']);
@@ -24,7 +24,7 @@ if ($game_id <= 0) {
 }
 
 if ($action === 'add') {
-    $stmt = $conn->prepare("INSERT INTO wishlist_items (user_id, game_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE game_id=game_id"); // Ignore if already exists
+    $stmt = $conn->prepare("INSERT INTO wishlist_items (user_id, game_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE game_id=game_id"); 
     $stmt->bind_param("ii", $user_id, $game_id);
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Added to wishlist.']);

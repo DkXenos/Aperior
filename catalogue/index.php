@@ -125,7 +125,7 @@ $conn->close();
                                 opacity-0 pointer-events-none origin-top-right z-[60]"> 
                         <a href="../index.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Home</a>
                         <a href="#catalog" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Catalog</a>
-                        <a href="#inventory" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Inventory</a>
+                        <a href="../inventory.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Inventory</a>
                         <a href="#friends" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Friends</a>
                         <a href="../wishlist.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Wishlist</a>
                         <a href="../cart.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Shopping Cart</a>

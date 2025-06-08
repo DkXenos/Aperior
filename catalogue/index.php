@@ -127,6 +127,7 @@ $conn->close();
             overflow: hidden;
             border-radius: 16px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background: #1a1a1a;
         }
         
         .hero-slide {
@@ -235,6 +236,7 @@ $conn->close();
             font-weight: bold;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.1;
         }
         
         .hero-description {
@@ -242,6 +244,7 @@ $conn->close();
             margin-bottom: 1.5rem;
             opacity: 0.9;
             max-width: 600px;
+            line-height: 1.4;
         }
         
         .hero-price {
@@ -266,6 +269,7 @@ $conn->close();
             transition: all 0.3s ease;
             border: 2px solid transparent;
             backdrop-filter: blur(10px);
+            font-size: 1rem;
         }
         
         .hero-button.primary {
@@ -289,25 +293,245 @@ $conn->close();
             transform: translateY(-2px);
         }
         
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .hero-carousel {
-                height: 400px;
+                height: 350px;
+                min-height: 350px;
+                border-radius: 12px;
             }
+            
+            .hero-slide {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                transition: opacity 0.8s ease-in-out;
+            }
+            
+            .hero-slide.active {
+                opacity: 1;
+            }
+            
+            .hero-slide-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 1;
+            }
+            
+            .hero-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+                z-index: 2;
+            }
+            
             .hero-content {
-                padding: 20px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                z-index: 3;
+                color: white;
             }
+            
             .hero-title {
-                font-size: 2rem;
-            }
-            .hero-description {
-                font-size: 1rem;
-            }
-            .hero-price {
                 font-size: 1.5rem;
+                color: white;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
             }
+            
+            .hero-description {
+                font-size: 0.85rem;
+                color: white;
+                margin-bottom: 0.75rem;
+                opacity: 0.9;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            .hero-price {
+                font-size: 1.25rem;
+                color: #ff5cf4;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+                margin-bottom: 0.75rem;
+                font-weight: bold;
+            }
+            
+            .hero-buttons {
+                gap: 8px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .hero-button {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                text-align: center;
+                flex: 1;
+                min-width: 120px;
+                font-weight: 600;
+                border-radius: 8px;
+            }
+            
+            .hero-button.primary {
+                background: linear-gradient(45deg, #ff5cf4, #ff1cf0);
+                color: white;
+                border: none;
+            }
+            
+            .hero-button.secondary {
+                background: rgba(255, 255, 255, 0.9);
+                color: #ff5cf4;
+                border: 1px solid #ff5cf4;
+            }
+            
             .hero-nav {
-                width: 50px;
-                height: 50px;
+                width: 40px;
+                height: 40px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(10px);
+            }
+            
+            .hero-nav.prev {
+                left: 10px;
+            }
+            
+            .hero-nav.next {
+                right: 10px;
+            }
+            
+            .hero-nav:hover {
+                background: rgba(255, 92, 244, 0.8);
+                transform: translateY(-50%) scale(1.05);
+            }
+            
+            .hero-dots {
+                position: absolute;
+                bottom: 8px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.5);
+                padding: 6px 12px;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .hero-dot {
+                width: 8px;
+                height: 8px;
+                background: rgba(255, 255, 255, 0.6);
+            }
+            
+            .hero-dot.active {
+                background: #ff5cf4;
+                transform: scale(1.2);
+            }
+        }
+        
+        /* Extra small mobile screens */
+        @media (max-width: 480px) {
+            .hero-carousel {
+                height: 280px;
+                min-height: 280px;
+                border-radius: 8px;
+            }
+            
+            .hero-content {
+                padding: 12px;
+            }
+            
+            .hero-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .hero-description {
+                font-size: 0.75rem;
+                margin-bottom: 0.5rem;
+                -webkit-line-clamp: 1;
+            }
+            
+            .hero-price {
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .hero-button {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                min-width: 100px;
+            }
+            
+            .hero-nav {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .hero-nav.prev {
+                left: 8px;
+            }
+            
+            .hero-nav.next {
+                right: 8px;
+            }
+            
+            .hero-dots {
+                bottom: 6px;
+                padding: 4px 10px;
+            }
+            
+            .hero-dot {
+                width: 6px;
+                height: 6px;
+            }
+        }
+        
+        /* Search bar responsive */
+        @media (max-width: 640px) {
+            .search-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .search-container input {
+                width: 100%;
+            }
+            
+            .search-container button {
+                width: 100%;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .hero-nav {
+                background: rgba(0, 0, 0, 0.7);
+            }
+            
+            .hero-button:active {
+                transform: scale(0.98);
+            }
+            
+            .category-tab:active {
+                transform: translateY(-1px);
             }
         }
     </style>
@@ -349,16 +573,16 @@ $conn->close();
 
         <div class="relative pt-20 md:pt-26 flex flex-col items-center w-full"> 
             <!-- Hero Featured Games Section -->
-            <section id="featuredSection" class="w-full bg-[#FFE4E1] py-12 md:py-20 lg:py-24">
+            <section id="featuredSection" class="w-full bg-[#FFE4E1] py-8 md:py-12 lg:py-20">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6">
-                    <div id="featuredTitle" class="text-center mb-8">
-                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#ff5cf4] mb-4">Featured & Popular Games</h2>
-                        <p class="text-lg md:text-xl text-[#ff1cf0] opacity-90">Discover the hottest titles and player favorites</p>
+                    <div id="featuredTitle" class="text-center mb-6 md:mb-8">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#ff5cf4] mb-2 md:mb-4 apply-custom-title-font">Featured & Popular Games</h2>
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-[#ff1cf0] opacity-90 apply-custom-title-font">Discover the hottest titles and player favorites</p>
                     </div>
                     
                     <!-- Hero Carousel -->
                     <div class="hero-carousel" id="heroCarousel">
-                        <?php foreach ($carousel_games_data as $index => $game): ?>
+                        <?php foreach ($carousel_games_data as $index => $game): ?> 
                             <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>">
                                 <img src="<?php echo htmlspecialchars($game['image_url'] ?: '../assets/image_placeholder.png'); ?>" 
                                      alt="<?php echo htmlspecialchars($game['title']); ?>" 
@@ -387,12 +611,12 @@ $conn->close();
                         
                         <!-- Navigation -->
                         <button class="hero-nav prev" id="heroPrevBtn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="15,18 9,12 15,6"></polyline>
                             </svg>
                         </button>
                         <button class="hero-nav next" id="heroNextBtn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="9,18 15,12 9,6"></polyline>
                             </svg>
                         </button>
@@ -408,29 +632,18 @@ $conn->close();
             </section>
 
             <!-- Main Catalogue Section -->
-            <section id="catalog" class="w-full bg-[#E6E6FA] py-8 md:py-12">
+            <section id="catalog" class="w-full bg-[#E6E6FA] py-6 md:py-8 lg:py-12">
                 <div class="container mx-auto px-4">
-                    <div id="catalogTitle" class="flex flex-col md:flex-row items-center justify-center md:justify-start align-center mb-8">
-                        <img src="../assets/aperior.svg" alt="Aperior Logo" class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32" />
-                        <h2 class="apply-custom-title-font text-3xl font-bold text-[#ff5cf4] mb-6 text-center md:text-left transition-all duration-300 ease-in-out hover:scale-110 hover:text-shadow-pink origin-left">Game Catalog</h2>
-                    </div>
-                    
-                    <!-- Search and Filter Controls -->
-                    <div class="mb-6 space-y-4">
-                        <!-- Search Bar -->
-                        <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
-                            <h3 class="text-lg font-bold text-[#ff5cf4] mb-4">Search Games</h3>
-                            <div class="flex gap-2">
-                                <input 
+                    <div id="catalogTitle" class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-6 md:mb-8">
                                     type="text" 
                                     id="gameSearch" 
                                     placeholder="Search games by title..." 
-                                    class="flex-1 px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4]"
+                                    class="flex-1 px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
                                     onkeyup="filterGames()"
                                 >
                                 <button 
                                     onclick="clearSearch()" 
-                                    class="px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors"
+                                    class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap"
                                 >
                                     Clear
                                 </button>
@@ -439,13 +652,13 @@ $conn->close();
 
                         <!-- Category Tabs -->
                         <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
-                            <h3 class="text-lg font-bold text-[#ff5cf4] mb-4">Browse by Category</h3>
+                            <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Browse by Category</h3>
                             <div class="flex flex-wrap gap-2">
-                                <button class="category-tab active px-4 py-2 rounded-lg font-medium text-[#ff5cf4] bg-pink-100" data-category="all" onclick="selectCategory('all', this)">
+                                <button class="category-tab active px-3 md:px-4 py-2 rounded-lg font-medium text-[#ff5cf4] bg-pink-100 text-xs md:text-sm" data-category="all" onclick="selectCategory('all', this)">
                                     All Games
                                 </button>
                                 <?php foreach ($genres as $genre): ?>
-                                    <button class="category-tab px-4 py-2 rounded-lg font-medium text-[#ff5cf4] bg-pink-100" data-category="<?php echo strtolower($genre); ?>" onclick="selectCategory('<?php echo strtolower($genre); ?>', this)">
+                                    <button class="category-tab px-3 md:px-4 py-2 rounded-lg font-medium text-[#ff5cf4] bg-pink-100 text-xs md:text-sm" data-category="<?php echo strtolower($genre); ?>" onclick="selectCategory('<?php echo strtolower($genre); ?>', this)">
                                         <?php echo htmlspecialchars($genre); ?>
                                     </button>
                                 <?php endforeach; ?>
@@ -455,29 +668,29 @@ $conn->close();
 
                     <!-- Games Grid -->
                     <div class="bg-pink-100 rounded-lg shadow-xl overflow-hidden">
-                        <div class="bg-pink-100 p-4 border-b border-pink-200">
-                            <h4 class="text-lg font-bold text-[#ff5cf4]">Available Games</h4>
-                            <p class="text-sm text-[#ff37f0]">Browse our collection</p>
+                        <div class="bg-pink-100 p-3 md:p-4 border-b border-pink-200">
+                            <h4 class="text-base md:text-lg font-bold text-[#ff5cf4]">Available Games</h4>
+                            <p class="text-xs md:text-sm text-[#ff37f0]">Browse our collection</p>
                             <div class="mt-2">
-                                <span id="gameCount" class="text-sm text-[#ff5cf4] font-medium">Showing <?php echo count($games_all); ?> games</span>
+                                <span id="gameCount" class="text-xs md:text-sm text-[#ff5cf4] font-medium">Showing <?php echo count($games_all); ?> games</span>
                             </div>
                         </div>
-                        <div class="p-4 max-h-[600px] overflow-y-auto">
-                            <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-3 md:p-4 max-h-[500px] md:max-h-[600px] overflow-y-auto">
+                            <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                                 <?php foreach ($games_all as $game): ?>
-                                    <div class="game-card bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow" data-title="<?php echo strtolower($game['title']); ?>" data-genre="<?php echo strtolower($game['genre']); ?>">
-                                        <img src="<?php echo htmlspecialchars($game['image_url'] ?: '../assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-40 object-cover rounded mb-2">
-                                        <h3 class="text-lg font-semibold text-pink-700"><?php echo htmlspecialchars($game['title']); ?></h3>
-                                        <p class="text-sm text-gray-600"><?php echo htmlspecialchars($game['genre'] ?: 'N/A'); ?></p>
-                                        <p class="text-md font-bold text-pink-500 my-1">$<?php echo number_format($game['price'], 2); ?></p>
+                                    <div class="game-card bg-white p-3 md:p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow" data-title="<?php echo strtolower($game['title']); ?>" data-genre="<?php echo strtolower($game['genre']); ?>">
+                                        <img src="<?php echo htmlspecialchars($game['image_url'] ?: '../assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-32 md:h-40 object-cover rounded mb-2">
+                                        <h3 class="text-base md:text-lg font-semibold text-pink-700"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                        <p class="text-xs md:text-sm text-gray-600"><?php echo htmlspecialchars($game['genre'] ?: 'N/A'); ?></p>
+                                        <p class="text-sm md:text-base font-bold text-pink-500 my-1">$<?php echo number_format($game['price'], 2); ?></p>
                                         <button 
-                                            class="action-button wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?>" 
+                                            class="action-button wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?> w-full mb-1 text-xs md:text-sm" 
                                             data-game-id="<?php echo $game['id']; ?>" 
                                             data-action="<?php echo $game['in_wishlist'] ? 'remove' : 'add'; ?>">
                                             <?php echo $game['in_wishlist'] ? 'In Wishlist' : 'Add to Wishlist'; ?>
                                         </button>
                                         <button 
-                                            class="action-button cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?>" 
+                                            class="action-button cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?> w-full text-xs md:text-sm" 
                                             data-game-id="<?php echo $game['id']; ?>"> 
                                             <?php echo $game['in_cart'] ? "In Cart ({$game['cart_quantity']})" : 'Add to Cart'; ?>
                                         </button>
@@ -549,6 +762,29 @@ $conn->close();
             heroCarousel.addEventListener('mouseleave', () => {
                 heroAutoPlayInterval = setInterval(nextHeroSlide, 5000);
             });
+        }
+        
+        // Touch support for mobile
+        let startX = 0;
+        let endX = 0;
+        
+        if (heroCarousel) {
+            heroCarousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            heroCarousel.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > 50) { // Minimum swipe distance
+                    if (diff > 0) {
+                        nextHeroSlide();
+                    } else {
+                        prevHeroSlide();
+                    }
+                }
+            }, { passive: true });
         }
         
         // Initialize hero carousel

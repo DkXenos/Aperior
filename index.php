@@ -104,10 +104,10 @@
                            opacity-0 pointer-events-none w-auto min-w-[144px] md:min-w-[176px] z-30" @
                 >
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Browse Catalogue</a>
-                        <a href="./inventory.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">My Inventory</a>
-                        <a href="./wishlist.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">My Wishlist</a>
-                        <a href="./cart.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Shopping Cart</a>
+                        <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Catalogue</a>
+                        <a href="./inventory.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Inventory</a>
+                        <a href="./wishlist.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Wishlist</a>
+                        <a href="./cart.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Cart</a>
                         <a href="./friends.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Friends</a>
                         <div class="border-t border-pink-200 my-1 md:my-1.5"></div>
                         <a href="./logout.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Logout</a>

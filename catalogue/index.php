@@ -622,7 +622,7 @@ $conn->close();
                         </button>
                         
                         <!-- Dots -->
-                        <div class="hero-dots" id="heroDots">
+                        <div class="hero-dots -mb-15" id="heroDots">
                             <?php for ($i = 0; $i < count($carousel_games_data); $i++): ?>
                                 <div class="hero-dot <?php echo $i === 0 ? 'active' : ''; ?>" data-index="<?php echo $i; ?>"></div>
                             <?php endfor; ?>
@@ -635,6 +635,17 @@ $conn->close();
             <section id="catalog" class="w-full bg-[#E6E6FA] py-6 md:py-8 lg:py-12">
                 <div class="container mx-auto px-4">
                     <div id="catalogTitle" class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-6 md:mb-8">
+                        <img src="../assets/aperior.svg" alt="Aperior Logo" class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mb-3 md:mb-0 md:mr-4" />
+                        <h2 class="apply-custom-title-font text-2xl sm:text-3xl md:text-4xl font-bold text-[#ff5cf4] text-center md:text-left transition-all duration-300 ease-in-out hover:scale-110 hover:text-shadow-pink origin-center md:origin-left">Game Catalog</h2>
+                    </div>
+                    
+                    <!-- Search and Filter Controls -->
+                    <div class="mb-6 space-y-4">
+                        <!-- Search Bar -->
+                        <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
+                            <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Search Games</h3>
+                            <div class="search-container flex gap-2">
+                                <input 
                                     type="text" 
                                     id="gameSearch" 
                                     placeholder="Search games by title..." 

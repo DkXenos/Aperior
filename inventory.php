@@ -29,54 +29,213 @@ if ($result) {
 }
 $stmt->close();
 $conn->close();
+
+// Get recent games (last 5 purchased)
+$recent_games = array_slice($inventory_games, 0, 5);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Inventory - Aprerior</title>
+    <title>My Library - Aperior</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./styles.css">
+    <style>
+        .game-card {
+            transition: all 0.2s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-item {
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen py-8">
-    <div class="container mx-auto max-w-4xl bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-xl shadow-2xl">
-        <div class="flex items-center mb-6">
-            <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-16 h-16 mr-4"/>
-            <h1 class="text-3xl font-bold text-pink-600 apply-custom-title-font">My Games Inventory</h1>
+
+<body class="bg-gray-900 min-h-screen text-white">
+    <!-- Main Container -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-56 bg-gray-800 flex-shrink-0 p-4 flex flex-col h-full">
+            <div class="flex items-center mb-8">
+                <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-10 h-10 mr-3" />
+                <h1 class="text-xl font-bold text-pink-400 apply-custom-title-font">APERIOR</h1>
+            </div>
+
+            <div class="mb-6">
+                <div class="text-sm text-gray-400 uppercase mb-2 pl-2">Library</div>
+                <div class="sidebar-item active p-2 text-white flex items-center">
+                    <i class="fas fa-home mr-3 w-5"></i> Home
+                </div>
+                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-download mr-3 w-5"></i> Downloads
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="text-sm text-gray-400 uppercase mb-2 pl-2">Collections</div>
+                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-star mr-3 w-5"></i> Favorites
+                </div>
+                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-gamepad mr-3 w-5"></i> All Games
+                </div>
+                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-clock-rotate-left mr-3 w-5"></i> Recently Played
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <a href="./index.php" class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-arrow-left mr-3 w-5"></i> Back to Home
+                </a>
+                <a href="./catalogue/index.php" class="sidebar-item p-2 text-gray-300 flex items-center">
+                    <i class="fas fa-shopping-cart mr-3 w-5"></i> Store
+                </a>
+            </div>
         </div>
 
-        <?php if (isset($_SESSION['payment_message'])): ?>
-            <div class="mb-4 p-3 rounded-md bg-green-100 text-green-700">
-                <?php echo $_SESSION['payment_message']; unset($_SESSION['payment_message']); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (empty($inventory_games)): ?>
-            <p class="text-center text-gray-600 text-lg">You don't own any games yet.</p>
-            <div class="text-center mt-6">
-                <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-800 hover:underline font-semibold">Browse Games to Purchase</a>
-            </div>
-        <?php else: ?>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php foreach ($inventory_games as $game): ?>
-                    <div class="bg-pink-50 p-4 rounded-lg shadow-md flex flex-col justify-between">
-                        <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-40 object-cover rounded mb-3">
-                        <div>
-                            <h2 class="text-lg font-semibold text-pink-700"><?php echo htmlspecialchars($game['title']); ?></h2>
-                            <p class="text-xs text-gray-500 mt-1">Purchased: <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
-                        </div>
-                        <button onclick="alert('Play game feature coming soon!')" class="mt-4 w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition-colors text-sm">
-                            Play Game
-                        </button>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden">
+            <!-- Header/Search -->
+            <div class="bg-gray-700 p-4 flex justify-between items-center">
+                <div class="flex space-x-3">
+                    <button id="grid-view-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm active">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button id="list-view-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+                <div class="flex-1 max-w-lg mx-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search games..." class="w-full bg-gray-800 text-white px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                        <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
                     </div>
-                <?php endforeach; ?>
+                </div>
+                <div>
+                    <button class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm">
+                        <i class="fas fa-sliders mr-1"></i> Filter
+                    </button>
+                </div>
             </div>
-        <?php endif; ?>
-        <p class="mt-8 text-center text-sm text-gray-600">
-            <a href="./index.php" class="font-medium text-pink-600 hover:text-pink-500 hover:underline">Back to Home</a> | 
-            <a href="./catalogue/index.php" class="font-medium text-pink-600 hover:text-pink-500 hover:underline">Browse Catalogue</a>
-        </p>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-gray-800 to-gray-900">
+                <?php if (isset($_SESSION['payment_message'])): ?>
+                    <div class="mb-4 p-3 rounded-md bg-green-800 text-green-100">
+                        <?php echo $_SESSION['payment_message'];
+                        unset($_SESSION['payment_message']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($recent_games)): ?>
+                    <div class="mb-8">
+                        <h2 class="text-xl font-bold text-white mb-4">Recently Added</h2>
+                        <div class="flex space-x-4 overflow-x-auto pb-4">
+                            <?php foreach ($recent_games as $game): ?>
+                                <div class="flex-shrink-0 w-60">
+                                    <div class="game-card bg-gray-700 rounded-lg overflow-hidden">
+                                        <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-28 object-cover">
+                                        <div class="p-3">
+                                            <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                            <p class="text-xs text-gray-400 mt-1">Added <?php echo date("M j", strtotime($game['purchase_date'])); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <h2 class="text-xl font-bold text-white mb-4">All Games</h2>
+
+                <?php if (empty($inventory_games)): ?>
+                    <div class="bg-gray-700 rounded-lg p-8 text-center">
+                        <i class="fas fa-gamepad text-5xl text-gray-500 mb-4"></i>
+                        <p class="text-gray-300 text-lg mb-4">Your library is empty</p>
+                        <a href="./catalogue/index.php" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-medium px-6 py-2 rounded-md transition-colors">
+                            Browse Games
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <!-- Grid View (default) -->
+                    <div id="grid-view" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        <?php foreach ($inventory_games as $game): ?>
+                            <div class="game-card bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-40 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                    <p class="text-xs text-gray-400 mt-1">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
+                                    <div class="flex mt-3">
+                                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-1.5 px-3 rounded-md text-sm transition-colors">
+                                            <i class="fas fa-play mr-1"></i> Play
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <!-- List View (hidden by default) -->
+                    <div id="list-view" class="hidden space-y-2">
+                        <?php foreach ($inventory_games as $game): ?>
+                            <div class="game-card bg-gray-700 rounded-lg overflow-hidden flex">
+                                <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-20 h-20 object-cover">
+                                <div class="p-3 flex-1 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                        <p class="text-xs text-gray-400">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
+                                    </div>
+                                    <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded-md text-sm transition-colors">
+                                        <i class="fas fa-play mr-1"></i> Play
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // View toggling functionality
+        document.getElementById('grid-view-btn').addEventListener('click', function() {
+            document.getElementById('grid-view').classList.remove('hidden');
+            document.getElementById('list-view').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('list-view-btn').classList.remove('active');
+        });
+
+        document.getElementById('list-view-btn').addEventListener('click', function() {
+            document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('grid-view').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('grid-view-btn').classList.remove('active');
+        });
+
+        // Play button functionality
+        const playButtons = document.querySelectorAll('.game-card button');
+        playButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                alert('Play game feature coming soon!');
+            });
+        });
+    </script>
 </body>
+
 </html>

@@ -1,140 +1,216 @@
-<?php session_start();?>
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aprerior Homepage</title>
+    <title>Aperior - Game Distribution Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <link rel="stylesheet" href="./styles.css">
 </head>
-<body>
 
-    <div class="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9]">
+<body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="relative z-10 flex items-center justify-between p-4 lg:p-8">
+        <div class="flex items-center space-x-3">
+            <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-10 h-10 lg:w-12 lg:h-12"/>
+            <h1 class="text-2xl lg:text-3xl font-bold text-pink-600 apply-custom-title-font">Aperior</h1>
+        </div>
 
-        <div id="cloudsContainer" class="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-0">
-            <div class="absolute top-[5%] left-[5%] w-[30vw] h-[20vh]">
-                <div class="absolute bg-white rounded-full w-[60%] h-[60%] top-0 left-[5%] opacity-30 blur-lg animate-pulse-slow"></div>
-                <div class="absolute bg-white rounded-full w-[50%] h-[50%] top-[20%] left-[30%] opacity-20 blur-xl animate-pulse-medium"></div>
-                <div class="absolute bg-white rounded-full w-[70%] h-[70%] top-[10%] left-[50%] opacity-25 blur-2xl animate-pulse-fast"></div>
-                <div class="absolute bg-white rounded-full w-[40%] h-[40%] bottom-0 right-[10%] opacity-30 blur-lg animate-pulse-slow"></div>
-            </div>
-            <div class="absolute top-[15%] right-[10%] w-[25vw] h-[15vh]">
-                <div class="absolute bg-white rounded-full w-[70%] h-[70%] -top-[10%] -left-[15%] opacity-40 blur-md animate-pulse-medium"></div>
-                <div class="absolute bg-white rounded-full w-[50%] h-[50%] top-[25%] left-[20%] opacity-30 blur-lg animate-pulse-fast"></div>
-                <div class="absolute bg-white rounded-full w-[60%] h-[60%] bottom-0 right-0 opacity-35 blur-xl animate-pulse-slow"></div>
-            </div>
-            <div class="absolute bottom-[10%] left-[20%] w-[20vw] h-[12vh]">
-                <div class="absolute bg-white rounded-full w-full h-full opacity-20 blur-2xl animate-pulse-fast"></div>
-                <div class="absolute bg-white rounded-full w-[80%] h-[80%] top-[10%] left-[10%] opacity-30 blur-xl animate-pulse-medium"></div>
-            </div>
-            <div class="absolute top-[5%] right-[35%] w-[15vw] h-[10vh]">
-                <div class="absolute bg-white rounded-full w-[80%] h-[80%] opacity-25 blur-lg animate-pulse-slow"></div>
-                <div class="absolute bg-white rounded-full w-[60%] h-[60%] top-[20%] left-[20%] opacity-35 blur-md animate-pulse-fast"></div>
-            </div>
-            <div class="absolute bg-white rounded-full w-[10vw] h-[5vh] top-[30%] left-[40%] opacity-10 blur-2xl animate-pulse-medium"></div>
-            <div class="absolute bg-white rounded-full w-[12vw] h-[6vh] bottom-[20%] right-[25%] opacity-15 blur-xl animate-pulse-slow"></div>
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-6">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Browse Games</a>
+                <a href="./wishlist.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Wishlist</a>
+                <a href="./cart.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Cart</a>
+                <a href="./inventory.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Library</a>
+                <a href="./friends.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Friends</a>
+                <span class="text-pink-700 font-medium">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                <a href="./logout.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Logout</a>
+            <?php else: ?>
+                <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Browse Games</a>
+                <a href="./login.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Login</a>
+                <a href="./register.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Register</a>
+                <!-- Developer Login Link -->
+                <div class="relative group">
+                    <a href="./developer/login.php" class="text-purple-600 hover:text-purple-800 hover:underline text-sm lg:text-base font-medium flex items-center">
+                        <i class="fas fa-code mr-1"></i>Developer
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="md:hidden text-pink-600 hover:text-pink-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg rounded-lg mx-4 mt-2 py-4 px-6 space-y-3 hidden md:hidden">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Browse Games</a>
+                <a href="./wishlist.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Wishlist</a>
+                <a href="./cart.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Cart</a>
+                <a href="./inventory.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Library</a>
+                <a href="./friends.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Friends</a>
+                <div class="border-t border-pink-200 my-2"></div>
+                <span class="block text-pink-700 font-medium text-sm">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                <a href="./logout.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Logout</a>
+            <?php else: ?>
+                <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Browse Games</a>
+                <a href="./login.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Login</a>
+                <a href="./register.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Register</a>
+                <div class="border-t border-pink-200 my-2"></div>
+                <a href="./developer/login.php" class="block text-purple-600 hover:text-purple-800 hover:underline text-sm md:text-base text-left font-medium">
+                    <i class="fas fa-code mr-2"></i>Developer Login
+                </a>
+            <?php endif; ?>
         </div>
 
         <img
-            id="tree"
-            src="./assets/tree.svg"
-            alt="Tree decoration"
-            class="absolute -bottom-5 lg:-left-10 -left-[115px] w-175 md:w-200 md:-left-40 md:-bottom-10 lg:w-270 z-10 opacity-0"
+            src="./assets/vine-left.svg"
+            alt="Top-left decoration"
+                class="absolute top-0 left-2 right-0 w-48 h-48 lg:w-38 lg:h-38 -mt-4 -ml-10 pointer-events-none"
         />
         <img
-            id="sun"
-            src="./assets/sun.svg"
-            alt="sun decoration"
-            class="absolute 
-                   -top-[120px] -left-[110px] w-[305px] 
-                   md:-top-[150px] md:-left-[120px] md:w-[350px] 
-                   lg:-top-[190px] lg:-left-[180px] lg:w-[480px] 
-                   z-10 opacity-0"
+            src="./assets/wheat.svg"
+            alt="Top-right decoration"
+            class="absolute top-0 right-0 w-32 h-32 lg:w-40 lg:h-40 -mt-6 -mr-6 pointer-events-none"
         />
-        <img
-            id="mountainLeft"
-            src="./assets/mountain.svg"
-            alt="mountain decoration"
-            class="absolute lg:-bottom-30 md:w-120 md:-bottom-15 md:left-60 lg:right-60 z-9 bottom-[40px] -right-[75px] w-110 lg:w-270 lg:z-8 opacity-0"
-        />
-        <img
-            id="mountainRight"
-            src="./assets/mountain.svg"
-            alt="mountain decoration"
-            class="absolute lg:-bottom-60 md:w-190 md:-bottom-20 lg:-right-100 z-8 -bottom-[50px] -right-[225px] w-120 lg:w-270 lg:z-9 opacity-0"
-        />
-        <img
-            id="sakura"
-            src="./assets/sakura.svg"
-            alt="Mobile sakura"
-            class="absolute sm:hidden w-100 bottom-7 -left-[175px] z-7 mb-4 opacity-0"
-        />
+    </nav>
 
-        <div id="centralBox" class="absolute inset-0 flex items-center justify-center z-20 opacity-0">
-            <div class="relative bg-[#EF91C5] p-4 md:p-6 rounded-3xl md:rounded-4xl shadow-lg text-center flex flex-row items-center">
-                <img
-                    id="aperiorLogo"
-                    src="./assets/aperior.svg"
-                    alt="Aperior Logo"
-                    class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 opacity-0 self-center" 
-                />
-                <div class="flex flex-col items-center ml-2 sm:ml-3 md:ml-4">
-                    <h1 id="titleText" class="text-[28px] sm:text-[35px] md:text-[60px] lg:text-[80px] font-bold text-[#FFF7AD] border-0 rounded-full px-2 md:px-4 py-1 md:py-2 apply-custom-title-font text-glow-yellow opacity-0">APERIOR</h1>
-                    <?php if (isset($_SESSION['username'])): ?>
-                        <span id="welcomeMessage" class="mt-1 md:mt-2 text-white text-sm md:text-base lg:text-lg apply-custom-title-font text-glow-yellow">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
-                    <?php endif; ?>
-                </div>
-                
-                <button
-                    id="popupButton"
-                    class="ml-3 md:ml-6 p-1 md:p-2 bg-white/20 hover:bg-white/40 rounded-full text-yellow-200 focus:outline-none transition-colors self-center" 
-                    aria-label="Open menu"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 md:w-6 md:h-6">
-                        <path id="popupIconPath" stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                </button>
-
-                <div
-                    id="popupMenu"
-                    class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-[calc(100%+16px)]
-                           bg-white/90 backdrop-blur-md p-3 md:p-4 rounded-xl shadow-2xl space-y-2 md:space-y-3
-                           opacity-0 pointer-events-none w-auto min-w-[144px] md:min-w-[176px] z-30" @
-                >
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Catalogue</a>
-                        <a href="./inventory.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Inventory</a>
-                        <a href="./wishlist.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Wishlist</a>
-                        <a href="./cart.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Cart</a>
-                        <a href="./friends.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Friends</a>
-                        <div class="border-t border-pink-200 my-1 md:my-1.5"></div>
-                        <a href="./logout.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Logout</a>
-                    <?php else: ?>
-                        <a href="./login.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Login</a>
-                        <a href="./register.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Register</a>
-                        <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Browse</a>
-                    <?php endif; ?>
-                </div>
-
-                <img
-                    src="./assets/vine-left.svg"
-                    alt="Top-left decoration"
-                        class="absolute top-0 left-2 right-0 w-48 h-48 lg:w-38 lg:h-38 -mt-4 -ml-10 pointer-events-none"
-                />
-                <img
-                    src="./assets/wheat.svg"
-                    alt="Bottom-right decoration"
-                    class="absolute bottom-0 right-6 
-                           w-[120px] h-[210px] -mb-17 -mr-14 
-                           md:w-[130px] md:h-[130px] md:-mb-2 md:-mr-16 
-                           lg:w-[140px] lg:h-[140px] lg:-mb-2 lg:-mr-17 pointer-events-none"
-                />
+    <!-- Main Content -->
+    <div class="flex-1 flex items-center justify-center px-4 lg:px-8 -mt-16 lg:-mt-20">
+        <div class="max-w-4xl mx-auto text-center relative">
+            <!-- Hero Content -->
+            <div class="mb-8 lg:mb-12">
+                <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-6"/>
+                <h1 class="text-4xl lg:text-6xl font-bold text-pink-600 mb-4 lg:mb-6 apply-custom-title-font">
+                    Welcome to Aperior
+                </h1>
+                <p class="text-lg lg:text-xl text-pink-700 mb-6 lg:mb-8 max-w-2xl mx-auto">
+                    Your ultimate destination for discovering, purchasing, and enjoying incredible games. 
+                    Connect with friends and build your digital library.
+                </p>
             </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="./catalogue/index.php" 
+                       class="w-full sm:w-auto px-8 py-3 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl">
+                        Browse Games
+                    </a>
+                    <a href="./inventory.php" 
+                       class="w-full sm:w-auto px-8 py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl">
+                        My Library
+                    </a>
+                <?php else: ?>
+                    <a href="./register.php" 
+                       class="w-full sm:w-auto px-8 py-3 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl">
+                        Get Started
+                    </a>
+                    <a href="./catalogue/index.php" 
+                       class="w-full sm:w-auto px-8 py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl">
+                        Browse Games
+                    </a>
+                <?php endif; ?>
+            </div>
+
+            <!-- Developer Section -->
+            <?php if (!isset($_SESSION['user_id'])): ?>
+                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-purple-200">
+                    <h3 class="text-xl font-bold text-purple-600 mb-3">Are you a Game Developer?</h3>
+                    <p class="text-purple-700 mb-4">Join our platform to publish and sell your games to thousands of players worldwide!</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="./developer/register.php" 
+                           class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Register as Developer
+                        </a>
+                        <a href="./developer/login.php" 
+                           class="px-6 py-2 border border-purple-600 text-purple-600 hover:bg-purple-50 font-medium rounded-md transition-colors">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Developer Login
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-12">
+                <div class="bg-white/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+                    <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Discover Amazing Games</h3>
+                    <p class="text-gray-600 text-sm">Explore our vast collection of games across all genres and platforms.</p>
+                </div>
+
+                <div class="bg-white/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Connect with Friends</h3>
+                    <p class="text-gray-600 text-sm">Add friends, share your favorite games, and play together.</p>
+                </div>
+
+                <div class="bg-white/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+                    <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Build Your Library</h3>
+                    <p class="text-gray-600 text-sm">Purchase games and access them anytime from your personal library.</p>
+                </div>
+            </div>
+
+            <!-- Background decorations -->
+            <img src="./assets/cloud.svg" alt="Cloud decoration" class="absolute -top-20 -left-20 w-32 h-32 opacity-20 pointer-events-none hidden lg:block"/>
+            <img src="./assets/mountain.svg" alt="Mountain decoration" class="absolute -bottom-10 -right-20 w-40 h-40 opacity-20 pointer-events-none hidden lg:block"/>
+            <img src="./assets/sakura.svg" alt="Sakura decoration" class="absolute top-1/4 -right-16 w-24 h-24 opacity-30 pointer-events-none hidden lg:block"/>
+            <img src="./assets/tree.svg" alt="Tree decoration" class="absolute bottom-1/4 -left-16 w-28 h-28 opacity-30 pointer-events-none hidden lg:block"/>
+            <img src="./assets/sun.svg" alt="Sun decoration" class="absolute -top-16 right-1/4 w-20 h-20 opacity-25 pointer-events-none hidden lg:block"/>
         </div>
     </div>
 
-    <script src="./js/script.js"></script>
+    <!-- Footer -->
+    <footer class="text-center py-6 px-4">
+        <p class="text-pink-600 text-sm">&copy; 2024 Aperior. Your gateway to amazing games.</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Add Font Awesome for icons
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            const fontAwesome = document.createElement('link');
+            fontAwesome.rel = 'stylesheet';
+            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+            document.head.appendChild(fontAwesome);
+        }
+    </script>
 </body>
+
 </html>

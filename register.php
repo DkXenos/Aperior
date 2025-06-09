@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_connect.php'; //
+require 'db_connect.php';
 
 $message = '';
 
@@ -9,11 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $email = $_POST['email']; 
 
-    
     if (empty($username) || empty($password) || empty($email)) {
         $message = "Please fill in all fields.";
     } else {
-        
         $stmt_check = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt_check->bind_param("ss", $username, $email);
         $stmt_check->execute();
@@ -22,10 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt_check->num_rows > 0) {
             $message = "Username or email already taken.";
         } else {
-            
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            
             $stmt_insert = $conn->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
             $stmt_insert->bind_param("sss", $username, $hashed_password, $email);
 
@@ -82,10 +78,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div>
                 <button type="submit"
                         class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 transition-colors">
-                    Register
+                    Register as User
                 </button>
             </div>
         </form>
+
+        <!-- Developer Registration Option -->
+        <div class="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <div class="text-center">
+                <h3 class="text-sm font-medium text-purple-800 mb-2">Are you a game developer?</h3>
+                <p class="text-xs text-purple-600 mb-3">Join as a developer to publish and sell your games on Aperior!</p>
+                <a href="developer/register.php" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    Register as Developer
+                </a>
+            </div>
+        </div>
+
         <p class="mt-6 text-center text-sm text-gray-600">
             Already have an account? <a href="login.php" class="font-medium text-pink-600 hover:text-pink-500 hover:underline">Login here</a>
         </p>

@@ -115,13 +115,19 @@ $recent_games = array_slice($inventory_games, 0, 5);
         <!-- Main Content -->
         <div class="flex-1 flex flex-col h-full overflow-hidden">
             <!-- Search/View Controls -->
-            <div class="bg-white/80 backdrop-blur-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-                <div class="flex space-x-3 w-full sm:w-auto justify-center">
-                    <button id="grid-view-btn" class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded text-sm active">
-                        <i class="fas fa-th-large"></i>
-                    </button>
-                    <button id="list-view-btn" class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
-                        <i class="fas fa-list"></i>
+            <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
+                <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Search Games</h3>
+                <div class="search-container flex gap-2">
+                    <input
+                        type="text"
+                        id="gameSearch"
+                        placeholder="Search games by title..."
+                        class="flex-1 px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
+                        onkeyup="filterGames()">
+                    <button
+                        onclick="clearSearch()"
+                        class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap">
+                        Clear
                     </button>
                 </div>
                 <div class="flex-1 w-full sm:w-auto sm:max-w-lg mx-0 sm:mx-4">

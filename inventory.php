@@ -115,33 +115,34 @@ $recent_games = array_slice($inventory_games, 0, 5);
         <!-- Main Content -->
         <div class="flex-1 flex flex-col h-full overflow-hidden">
             <!-- Search/View Controls -->
-            <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
-                <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Search Games</h3>
-                <div class="search-container flex gap-2">
-                    <input
-                        type="text"
-                        id="gameSearch"
-                        placeholder="Search games by title..."
-                        class="flex-1 px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
-                        onkeyup="filterGames()">
-                    <button
-                        onclick="clearSearch()"
-                        class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap">
-                        Clear
+            <div class="bg-white/80 backdrop-blur-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="flex space-x-3 w-auto justify-center">
+                    <button id="grid-view-btn" class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded text-sm active">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button id="list-view-btn" class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
+                        <i class="fas fa-list"></i>
                     </button>
                 </div>
-                <div class="flex-1 w-full sm:w-auto sm:max-w-lg mx-0 sm:mx-4">
-                    <div class="relative">
-                        <input 
-                            type="text" 
+
+                <div class="flex-grow max-w-2xl px-4">
+                    <div class="search-container flex gap-2 w-full">
+                        <input
+                            type="text"
                             id="gameSearch"
-                            placeholder="Search games..." 
-                            class="w-full bg-white/90 border border-pink-200 text-gray-800 px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                            onkeyup="searchGames()">
-                        <i class="fas fa-search absolute right-3 top-2.5 text-pink-400"></i>
+                            placeholder="Search games by title..."
+                            class="w-full px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
+                            onkeyup="filterGames()">
+                        <button onclick="clearSearch()" class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
-                <div>
+
+                <div class="w-auto flex justify-center">
+                    <button class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
+                        <i class="fas fa-sliders mr-1"></i> Filter
+                    </button>
                 </div>
             </div>
 
@@ -229,83 +230,15 @@ $recent_games = array_slice($inventory_games, 0, 5);
         document.getElementById('grid-view-btn').addEventListener('click', function() {
             document.getElementById('grid-view').classList.remove('hidden');
             document.getElementById('list-view').classList.add('hidden');
-            this.classList.add('active', 'bg-pink-500', 'text-white');
-            this.classList.remove('bg-pink-300', 'text-pink-800');
-            const listBtn = document.getElementById('list-view-btn');
-            listBtn.classList.remove('active', 'bg-pink-500', 'text-white');
-            listBtn.classList.add('bg-pink-300', 'text-pink-800');
+            this.classList.add('active');
+            document.getElementById('list-view-btn').classList.remove('active');
         });
 
         document.getElementById('list-view-btn').addEventListener('click', function() {
             document.getElementById('list-view').classList.remove('hidden');
             document.getElementById('grid-view').classList.add('hidden');
-            this.classList.add('active', 'bg-pink-500', 'text-white');
-            this.classList.remove('bg-pink-300', 'text-pink-800');
-            const gridBtn = document.getElementById('grid-view-btn');
-            gridBtn.classList.remove('active', 'bg-pink-500', 'text-white');
-            gridBtn.classList.add('bg-pink-300', 'text-pink-800');
-        });
-
-        // Search functionality
-        function searchGames() {
-            const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
-            const gridCards = document.querySelectorAll('#grid-view .game-card');
-            const listCards = document.querySelectorAll('#list-view .game-card');
-            
-            // Search in grid view
-            gridCards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            
-            // Search in list view
-            listCards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Update recently added section
-            const recentSection = document.querySelector('.mb-8');
-            if (recentSection && searchTerm.length > 0) {
-                const recentCards = recentSection.querySelectorAll('.game-card');
-                let hasVisibleRecentGames = false;
-                
-                recentCards.forEach(card => {
-                    const title = card.querySelector('h3').textContent.toLowerCase();
-                    if (title.includes(searchTerm)) {
-                        card.style.display = 'block';
-                        hasVisibleRecentGames = true;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-                
-                // Hide/show recent section based on matches
-                recentSection.style.display = hasVisibleRecentGames ? 'block' : 'none';
-            } else if (recentSection) {
-                // Show all recent games when search is cleared
-                const recentCards = recentSection.querySelectorAll('.game-card');
-                recentCards.forEach(card => {
-                    card.style.display = 'block';
-                });
-                recentSection.style.display = 'block';
-            }
-        }
-
-        // Clear search when escape key is pressed
-        document.getElementById('gameSearch').addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                this.value = '';
-                searchGames();
-            }
+            this.classList.add('active');
+            document.getElementById('grid-view-btn').classList.remove('active');
         });
 
         // Play button functionality
@@ -315,6 +248,73 @@ $recent_games = array_slice($inventory_games, 0, 5);
                 alert('Play game feature coming soon!');
             });
         });
+
+        function clearSearch() {
+            document.getElementById('gameSearch').value = '';
+            filterGames();
+        }
+
+        // Add this function to your script section
+        function filterGames() {
+            const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
+            let visibleCount = 0;
+
+            // Filter grid view items
+            const gridItems = document.querySelectorAll('#grid-view .game-card');
+            gridItems.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const cardContainer = card.closest('.game-card').parentElement;
+
+                if (title.includes(searchTerm)) {
+                    cardContainer.style.display = '';
+                    visibleCount++;
+                } else {
+                    cardContainer.style.display = 'none';
+                }
+            });
+
+            // Filter list view items
+            const listItems = document.querySelectorAll('#list-view .game-card');
+            listItems.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+
+                if (title.includes(searchTerm)) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update the Recently Added section based on search
+            if (document.querySelector('.mb-8')) {
+                const recentGames = document.querySelectorAll('.mb-8 .game-card');
+                recentGames.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const cardContainer = card.closest('.game-card').parentElement;
+
+                    if (searchTerm === '' || title.includes(searchTerm)) {
+                        cardContainer.style.display = '';
+                    } else {
+                        cardContainer.style.display = 'none';
+                    }
+                });
+            }
+
+            // Show message if no games found
+            const noResultsMessage = document.getElementById('no-results-message');
+            if (!noResultsMessage && visibleCount === 0 && searchTerm !== '') {
+                const message = document.createElement('div');
+                message.id = 'no-results-message';
+                message.className = 'text-center py-8 text-gray-500';
+                message.innerHTML = `No games found matching "<span class="font-medium">${searchTerm}</span>"`;
+
+                const gridView = document.getElementById('grid-view');
+                gridView.parentNode.insertBefore(message, gridView.nextSibling);
+            } else if (noResultsMessage && (visibleCount > 0 || searchTerm === '')) {
+                noResultsMessage.remove();
+            }
+        }
     </script>
 </body>
 

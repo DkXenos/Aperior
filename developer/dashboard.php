@@ -166,10 +166,7 @@ $conn->close();
                                     <p class="text-sm text-gray-600 mb-2"><?php echo htmlspecialchars($game['genre']); ?></p>
                                     <p class="text-lg font-bold text-purple-600 mb-3">$<?php echo number_format($game['price'], 2); ?></p>
                                     <div class="flex space-x-2">
-                                        <a href="edit_game.php?id=<?php echo $game['id']; ?>" 
-                                           class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-3 rounded text-sm transition-colors">
-                                            <i class="fas fa-edit mr-1"></i>Edit
-                                        </a>
+                                            
                                         <a href="delete_game.php?id=<?php echo $game['id']; ?>" 
                                            onclick="return confirm('Are you sure you want to delete this game?')"
                                            class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center py-2 px-3 rounded text-sm transition-colors">

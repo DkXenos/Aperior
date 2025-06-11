@@ -672,13 +672,8 @@ $conn->close();
                                     id="gameSearch"
                                     placeholder="Search games by title..."
                                     class="flex-1 px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
-                                    onkeyup="filterGames()">
-                                <button
-                                    onclick="clearSearch()"
-                                    class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap">
-                                    Clear
-                                </button>
-                            </div>
+                                    onkeyup="filterGames()"> 
+                                </div>
                         </div>
 
                         <!-- Category Tabs -->
@@ -928,12 +923,12 @@ $conn->close();
                             button.dataset.action = 'add';
                         }
                     } else {
-                        alert('Error: ' + result.message);
+                        // Remove this alert line - just reset the button
                         button.textContent = originalText;
                     }
                 } catch (error) {
                     console.error('Wishlist error:', error);
-                    alert('An error occurred. Please try again.');
+                    // Remove this alert too - just reset the button
                     button.textContent = originalText;
                 } finally {
                     button.disabled = false;

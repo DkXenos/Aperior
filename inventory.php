@@ -49,6 +49,13 @@ $recent_games = array_slice($inventory_games, 0, 5);
                 extend: {
                     screens: {
                         'xs': '475px',
+                    },
+                    colors: {
+                        aperior: {
+                            yellow: '#FFF7AD',
+                            pink: '#FFA9F9',
+                            purple: '#9D4EDD',
+                        }
                     }
                 }
             }
@@ -71,7 +78,7 @@ $recent_games = array_slice($inventory_games, 0, 5);
 
         .sidebar-item:hover,
         .sidebar-item.active {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.25);
         }
 
         @media (max-width: 767px) {
@@ -87,60 +94,60 @@ $recent_games = array_slice($inventory_games, 0, 5);
     </style>
 </head>
 
-<body class="bg-gray-900 min-h-screen text-white">
+<body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen text-gray-800">
     <!-- Main Container -->
     <div class="flex flex-col md:flex-row h-screen overflow-hidden">
         <!-- Mobile Header -->
-        <div class="md:hidden bg-gray-800 p-4 flex justify-between items-center">
+        <div class="md:hidden bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-8 h-8 mr-2" />
-                <h1 class="text-lg font-bold text-pink-400 apply-custom-title-font">APERIOR</h1>
+                <h1 class="text-lg font-bold text-pink-600 apply-custom-title-font">APERIOR</h1>
             </div>
-            <button id="sidebar-toggle" class="text-white p-2">
+            <button id="sidebar-toggle" class="text-pink-600 p-2">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
 
         <!-- Sidebar -->
-        <div id="sidebar" class="w-full md:w-56 bg-gray-800 flex-shrink-0 p-4 flex flex-col h-full md:static fixed top-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div id="sidebar" class="w-4/5 md:w-56 bg-pink-200/80 backdrop-blur-sm flex-shrink-0 p-4 flex flex-col h-full md:static fixed top-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <div class="flex items-center mb-8 md:block">
-                <button id="sidebar-close" class="md:hidden ml-auto text-white p-2">
+                <button id="sidebar-close" class="md:hidden ml-auto text-pink-600 p-2">
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="flex items-center">
                     <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-10 h-10 mr-3" />
-                    <h1 class="text-xl font-bold text-pink-400 apply-custom-title-font">APERIOR</h1>
+                    <h1 class="text-xl font-bold text-pink-600 apply-custom-title-font">APERIOR</h1>
                 </div>
             </div>
 
             <div class="mb-6">
-                <div class="text-sm text-gray-400 uppercase mb-2 pl-2">Library</div>
-                <div class="sidebar-item active p-2 text-white flex items-center">
+                <div class="text-sm text-pink-700 uppercase mb-2 pl-2 font-semibold">Library</div>
+                <div class="sidebar-item active p-2 text-pink-800 flex items-center">
                     <i class="fas fa-home mr-3 w-5"></i> Home
                 </div>
-                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                <div class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-download mr-3 w-5"></i> Downloads
                 </div>
             </div>
 
             <div class="mb-6">
-                <div class="text-sm text-gray-400 uppercase mb-2 pl-2">Collections</div>
-                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                <div class="text-sm text-pink-700 uppercase mb-2 pl-2 font-semibold">Collections</div>
+                <div class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-star mr-3 w-5"></i> Favorites
                 </div>
-                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                <div class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-gamepad mr-3 w-5"></i> All Games
                 </div>
-                <div class="sidebar-item p-2 text-gray-300 flex items-center">
+                <div class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-clock-rotate-left mr-3 w-5"></i> Recently Played
                 </div>
             </div>
 
             <div class="mt-auto">
-                <a href="./index.php" class="sidebar-item p-2 text-gray-300 flex items-center">
+                <a href="./index.php" class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-arrow-left mr-3 w-5"></i> Back to Home
                 </a>
-                <a href="./catalogue/index.php" class="sidebar-item p-2 text-gray-300 flex items-center">
+                <a href="./catalogue/index.php" class="sidebar-item p-2 text-pink-700 flex items-center">
                     <i class="fas fa-shopping-cart mr-3 w-5"></i> Store
                 </a>
             </div>
@@ -149,32 +156,32 @@ $recent_games = array_slice($inventory_games, 0, 5);
         <!-- Main Content -->
         <div class="flex-1 flex flex-col h-full overflow-hidden">
             <!-- Header/Search -->
-            <div class="bg-gray-700 p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="bg-white/80 backdrop-blur-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="flex space-x-3 w-full sm:w-auto justify-center">
-                    <button id="grid-view-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm active">
+                    <button id="grid-view-btn" class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded text-sm active">
                         <i class="fas fa-th-large"></i>
                     </button>
-                    <button id="list-view-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm">
+                    <button id="list-view-btn" class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
                         <i class="fas fa-list"></i>
                     </button>
                 </div>
                 <div class="flex-1 w-full sm:w-auto sm:max-w-lg mx-0 sm:mx-4">
                     <div class="relative">
-                        <input type="text" placeholder="Search games..." class="w-full bg-gray-800 text-white px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
-                        <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
+                        <input type="text" placeholder="Search games..." class="w-full bg-white/90 border border-pink-200 text-gray-800 px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                        <i class="fas fa-search absolute right-3 top-2.5 text-pink-400"></i>
                     </div>
                 </div>
                 <div class="w-full sm:w-auto flex justify-center">
-                    <button class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm">
+                    <button class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
                         <i class="fas fa-sliders mr-1"></i> Filter
                     </button>
                 </div>
             </div>
 
             <!-- Content Area -->
-            <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-gradient-to-br from-gray-800 to-gray-900">
+            <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-gradient-to-br from-[#FFFBE6] to-[#FFEBFF]">
                 <?php if (isset($_SESSION['payment_message'])): ?>
-                    <div class="mb-4 p-3 rounded-md bg-green-800 text-green-100">
+                    <div class="mb-4 p-3 rounded-md bg-green-100 text-green-800 border border-green-200">
                         <?php echo $_SESSION['payment_message'];
                         unset($_SESSION['payment_message']); ?>
                     </div>
@@ -182,15 +189,15 @@ $recent_games = array_slice($inventory_games, 0, 5);
 
                 <?php if (!empty($recent_games)): ?>
                     <div class="mb-8">
-                        <h2 class="text-xl font-bold text-white mb-4">Recently Added</h2>
+                        <h2 class="text-xl font-bold text-pink-600 mb-4">Recently Added</h2>
                         <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:flex sm:space-x-4 sm:overflow-x-auto sm:pb-4">
                             <?php foreach ($recent_games as $game): ?>
                                 <div class="flex-shrink-0 sm:w-60">
-                                    <div class="game-card bg-gray-700 rounded-lg overflow-hidden">
+                                    <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md">
                                         <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-28 object-cover">
                                         <div class="p-3">
-                                            <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
-                                            <p class="text-xs text-gray-400 mt-1">Added <?php echo date("M j", strtotime($game['purchase_date'])); ?></p>
+                                            <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                            <p class="text-xs text-pink-500 mt-1">Added <?php echo date("M j", strtotime($game['purchase_date'])); ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -199,12 +206,12 @@ $recent_games = array_slice($inventory_games, 0, 5);
                     </div>
                 <?php endif; ?>
 
-                <h2 class="text-xl font-bold text-white mb-4">All Games</h2>
+                <h2 class="text-xl font-bold text-pink-600 mb-4">All Games</h2>
 
                 <?php if (empty($inventory_games)): ?>
-                    <div class="bg-gray-700 rounded-lg p-4 sm:p-8 text-center">
-                        <i class="fas fa-gamepad text-5xl text-gray-500 mb-4"></i>
-                        <p class="text-gray-300 text-lg mb-4">Your library is empty</p>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-lg p-4 sm:p-8 text-center shadow-md">
+                        <i class="fas fa-gamepad text-5xl text-pink-400 mb-4"></i>
+                        <p class="text-gray-700 text-lg mb-4">Your library is empty</p>
                         <a href="./catalogue/index.php" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-medium px-6 py-2 rounded-md transition-colors">
                             Browse Games
                         </a>
@@ -213,13 +220,13 @@ $recent_games = array_slice($inventory_games, 0, 5);
                     <!-- Grid View (default) -->
                     <div id="grid-view" class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         <?php foreach ($inventory_games as $game): ?>
-                            <div class="game-card bg-gray-700 rounded-lg overflow-hidden">
+                            <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md">
                                 <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-32 sm:h-40 object-cover">
                                 <div class="p-3 sm:p-4">
-                                    <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
-                                    <p class="text-xs text-gray-400 mt-1">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
+                                    <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                    <p class="text-xs text-pink-500 mt-1">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
                                     <div class="flex mt-3">
-                                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-1.5 px-3 rounded-md text-sm transition-colors">
+                                        <button class="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-medium py-1.5 px-3 rounded-md text-sm transition-colors">
                                             <i class="fas fa-play mr-1"></i> Play
                                         </button>
                                     </div>
@@ -231,14 +238,14 @@ $recent_games = array_slice($inventory_games, 0, 5);
                     <!-- List View (hidden by default) -->
                     <div id="list-view" class="hidden space-y-2">
                         <?php foreach ($inventory_games as $game): ?>
-                            <div class="game-card bg-gray-700 rounded-lg overflow-hidden flex">
+                            <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md flex">
                                 <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-20 h-20 object-cover">
                                 <div class="p-3 flex-1 flex items-center justify-between">
                                     <div>
-                                        <h3 class="font-medium text-white"><?php echo htmlspecialchars($game['title']); ?></h3>
-                                        <p class="text-xs text-gray-400">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
+                                        <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($game['title']); ?></h3>
+                                        <p class="text-xs text-pink-500">Added <?php echo date("M j, Y", strtotime($game['purchase_date'])); ?></p>
                                     </div>
-                                    <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded-md text-sm transition-colors">
+                                    <button class="bg-pink-600 hover:bg-pink-700 text-white font-medium py-1 px-3 rounded-md text-sm transition-colors">
                                         <i class="fas fa-play mr-1"></i> Play
                                     </button>
                                 </div>

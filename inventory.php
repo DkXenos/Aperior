@@ -96,66 +96,25 @@ $recent_games = array_slice($inventory_games, 0, 5);
 
 <body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen text-gray-800">
     <!-- Main Container -->
-    <div class="flex flex-col md:flex-row h-screen overflow-hidden">
-        <!-- Mobile Header -->
-        <div class="md:hidden bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center">
+    <div class="flex flex-col h-screen overflow-hidden">
+        <!-- Header -->
+        <div class="bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center">
             <div class="flex items-center">
+                <a href="./index.php" class="mr-2 text-pink-600 hover:text-pink-700">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
                 <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-8 h-8 mr-2" />
-                <h1 class="text-lg font-bold text-pink-600 apply-custom-title-font">APERIOR</h1>
+                <h1 class="text-lg font-bold text-pink-600 apply-custom-title-font">APERIOR LIBRARY</h1>
             </div>
-            <button id="sidebar-toggle" class="text-pink-600 p-2">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-
-        <!-- Sidebar -->
-        <div id="sidebar" class="w-4/5 md:w-56 bg-pink-200/80 backdrop-blur-sm flex-shrink-0 p-4 flex flex-col h-full md:static fixed top-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div class="flex items-center mb-8 md:block">
-                <button id="sidebar-close" class="md:hidden ml-auto text-pink-600 p-2">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="flex items-center">
-                    <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-10 h-10 mr-3" />
-                    <h1 class="text-xl font-bold text-pink-600 apply-custom-title-font">APERIOR</h1>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <div class="text-sm text-pink-700 uppercase mb-2 pl-2 font-semibold">Library</div>
-                <div class="sidebar-item active p-2 text-pink-800 flex items-center">
-                    <i class="fas fa-home mr-3 w-5"></i> Home
-                </div>
-                <div class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-download mr-3 w-5"></i> Downloads
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <div class="text-sm text-pink-700 uppercase mb-2 pl-2 font-semibold">Collections</div>
-                <div class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-star mr-3 w-5"></i> Favorites
-                </div>
-                <div class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-gamepad mr-3 w-5"></i> All Games
-                </div>
-                <div class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-clock-rotate-left mr-3 w-5"></i> Recently Played
-                </div>
-            </div>
-
-            <div class="mt-auto">
-                <a href="./index.php" class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-arrow-left mr-3 w-5"></i> Back to Home
-                </a>
-                <a href="./catalogue/index.php" class="sidebar-item p-2 text-pink-700 flex items-center">
-                    <i class="fas fa-shopping-cart mr-3 w-5"></i> Store
-                </a>
-            </div>
+            <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-700 flex items-center">
+                <i class="fas fa-shopping-cart mr-1"></i>
+                <span class="hidden sm:inline">Store</span>
+            </a>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col h-full overflow-hidden">
-            <!-- Header/Search -->
+            <!-- Search/View Controls -->
             <div class="bg-white/80 backdrop-blur-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="flex space-x-3 w-full sm:w-auto justify-center">
                     <button id="grid-view-btn" class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded text-sm active">
@@ -218,7 +177,7 @@ $recent_games = array_slice($inventory_games, 0, 5);
                     </div>
                 <?php else: ?>
                     <!-- Grid View (default) -->
-                    <div id="grid-view" class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <div id="grid-view" class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         <?php foreach ($inventory_games as $game): ?>
                             <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md">
                                 <img src="<?php echo htmlspecialchars($game['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($game['title']); ?>" class="w-full h-32 sm:h-40 object-cover">
@@ -279,37 +238,6 @@ $recent_games = array_slice($inventory_games, 0, 5);
             button.addEventListener('click', function() {
                 alert('Play game feature coming soon!');
             });
-        });
-
-        // Mobile sidebar toggle
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarClose = document.getElementById('sidebar-close');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.createElement('div');
-
-        overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-30 hidden transition-opacity duration-300 ease-in-out';
-        document.body.appendChild(overlay);
-
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        });
-
-        sidebarClose.addEventListener('click', function() {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
-
-        overlay.addEventListener('click', function() {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
-
-        // Close sidebar when resizing to desktop if it was open
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768 && !sidebar.classList.contains('-translate-x-full')) {
-                overlay.classList.add('hidden');
-            }
         });
     </script>
 </body>

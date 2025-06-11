@@ -1,6 +1,6 @@
 <?php
-session_start(); 
-require '../db_connect.php'; 
+session_start();
+require '../db_connect.php';
 
 $games_all = [];
 
@@ -15,14 +15,14 @@ if ($result) {
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     foreach ($games_all as $key => $game) {
-        
+
         $stmt_wish = $conn->prepare("SELECT id FROM wishlist_items WHERE user_id = ? AND game_id = ?");
         $stmt_wish->bind_param("ii", $user_id, $game['id']);
         $stmt_wish->execute();
         $games_all[$key]['in_wishlist'] = $stmt_wish->get_result()->num_rows > 0;
         $stmt_wish->close();
 
-        
+
         $stmt_cart = $conn->prepare("SELECT quantity FROM cart_items WHERE user_id = ? AND game_id = ?");
         $stmt_cart->bind_param("ii", $user_id, $game['id']);
         $stmt_cart->execute();
@@ -37,7 +37,7 @@ if (isset($_SESSION['user_id'])) {
         $stmt_cart->close();
     }
 } else {
-    
+
     foreach ($games_all as $key => $game) {
         $games_all[$key]['in_wishlist'] = false;
         $games_all[$key]['in_cart'] = false;
@@ -47,7 +47,7 @@ if (isset($_SESSION['user_id'])) {
 
 $carousel_games_data = [];
 foreach ($games_all as $game) {
-    if (!empty($game['is_featured'])) { 
+    if (!empty($game['is_featured'])) {
         $carousel_games_data[] = $game;
     }
 }
@@ -71,13 +71,14 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Catalogue</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../styles.css"> 
-    <link rel="stylesheet" href="./styles.css">   
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./styles.css">
     <style>
         .action-button {
             padding: 8px 12px;
@@ -87,35 +88,55 @@ $conn->close();
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 8px;
-            display: inline-block; 
+            display: inline-block;
             font-size: 0.875rem;
         }
-        .wishlist-btn { background-color: #FF69B4; }
-        .wishlist-btn:hover { background-color: #FF1493; }
-        .wishlist-btn.in-wishlist { background-color: #C71585; }
 
-        .cart-btn { background-color: #4CAF50; }
-        .cart-btn:hover { background-color: #45a049; }
-        .cart-btn.in-cart { background-color: #FFA500; }
+        .wishlist-btn {
+            background-color: #FF69B4;
+        }
+
+        .wishlist-btn:hover {
+            background-color: #FF1493;
+        }
+
+        .wishlist-btn.in-wishlist {
+            background-color: #C71585;
+        }
+
+        .cart-btn {
+            background-color: #4CAF50;
+        }
+
+        .cart-btn:hover {
+            background-color: #45a049;
+        }
+
+        .cart-btn.in-cart {
+            background-color: #FFA500;
+        }
 
         .category-tab {
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
         }
+
         .category-tab.active {
             background-color: #ff5cf4;
             color: white;
             border-bottom-color: #ff1cf0;
             transform: translateY(-2px);
         }
+
         .category-tab:hover:not(.active) {
             background-color: #ffc0cb;
             transform: translateY(-1px);
         }
-        
+
         .game-card {
             display: block;
         }
+
         .game-card.hidden {
             display: none;
         }
@@ -129,7 +150,7 @@ $conn->close();
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             background: #1a1a1a;
         }
-        
+
         .hero-slide {
             position: absolute;
             top: 0;
@@ -140,11 +161,11 @@ $conn->close();
             transition: opacity 0.8s ease-in-out;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        
+
         .hero-slide.active {
             opacity: 1;
         }
-        
+
         .hero-slide-bg {
             position: absolute;
             top: 0;
@@ -154,17 +175,17 @@ $conn->close();
             object-fit: cover;
             z-index: 1;
         }
-        
+
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
             z-index: 2;
         }
-        
+
         .hero-content {
             position: absolute;
             bottom: 0;
@@ -174,7 +195,7 @@ $conn->close();
             z-index: 3;
             color: white;
         }
-        
+
         .hero-nav {
             position: absolute;
             top: 50%;
@@ -193,20 +214,20 @@ $conn->close();
             transition: all 0.3s ease;
             z-index: 4;
         }
-        
+
         .hero-nav:hover {
             background: rgba(255, 92, 244, 0.8);
             transform: translateY(-50%) scale(1.1);
         }
-        
+
         .hero-nav.prev {
             left: 20px;
         }
-        
+
         .hero-nav.next {
             right: 20px;
         }
-        
+
         .hero-dots {
             position: absolute;
             bottom: 20px;
@@ -216,7 +237,7 @@ $conn->close();
             gap: 12px;
             z-index: 4;
         }
-        
+
         .hero-dot {
             width: 16px;
             height: 16px;
@@ -225,20 +246,20 @@ $conn->close();
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .hero-dot.active {
             background: #ff5cf4;
             transform: scale(1.2);
         }
-        
+
         .hero-title {
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             line-height: 1.1;
         }
-        
+
         .hero-description {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
@@ -246,21 +267,21 @@ $conn->close();
             max-width: 600px;
             line-height: 1.4;
         }
-        
+
         .hero-price {
             font-size: 2rem;
             font-weight: bold;
             color: #ff5cf4;
             margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-        
+
         .hero-buttons {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
-        
+
         .hero-button {
             padding: 12px 24px;
             border-radius: 8px;
@@ -271,28 +292,28 @@ $conn->close();
             backdrop-filter: blur(10px);
             font-size: 1rem;
         }
-        
+
         .hero-button.primary {
             background: linear-gradient(45deg, #ff5cf4, #ff1cf0);
             color: white;
         }
-        
+
         .hero-button.primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 92, 244, 0.3);
         }
-        
+
         .hero-button.secondary {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border-color: rgba(255, 255, 255, 0.3);
         }
-        
+
         .hero-button.secondary:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
-        
+
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .hero-carousel {
@@ -300,7 +321,7 @@ $conn->close();
                 min-height: 350px;
                 border-radius: 12px;
             }
-            
+
             .hero-slide {
                 position: absolute;
                 top: 0;
@@ -310,11 +331,11 @@ $conn->close();
                 opacity: 0;
                 transition: opacity 0.8s ease-in-out;
             }
-            
+
             .hero-slide.active {
                 opacity: 1;
             }
-            
+
             .hero-slide-bg {
                 position: absolute;
                 top: 0;
@@ -324,17 +345,17 @@ $conn->close();
                 object-fit: cover;
                 z-index: 1;
             }
-            
+
             .hero-overlay {
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+                background: linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 100%);
                 z-index: 2;
             }
-            
+
             .hero-content {
                 position: absolute;
                 bottom: 0;
@@ -344,15 +365,15 @@ $conn->close();
                 z-index: 3;
                 color: white;
             }
-            
+
             .hero-title {
                 font-size: 1.5rem;
                 color: white;
-                text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
                 margin-bottom: 0.5rem;
                 line-height: 1.2;
             }
-            
+
             .hero-description {
                 font-size: 0.85rem;
                 color: white;
@@ -364,21 +385,21 @@ $conn->close();
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
-            
+
             .hero-price {
                 font-size: 1.25rem;
                 color: #ff5cf4;
-                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
                 margin-bottom: 0.75rem;
                 font-weight: bold;
             }
-            
+
             .hero-buttons {
                 gap: 8px;
                 flex-direction: row;
                 flex-wrap: wrap;
             }
-            
+
             .hero-button {
                 padding: 8px 16px;
                 font-size: 0.8rem;
@@ -388,19 +409,19 @@ $conn->close();
                 font-weight: 600;
                 border-radius: 8px;
             }
-            
+
             .hero-button.primary {
                 background: linear-gradient(45deg, #ff5cf4, #ff1cf0);
                 color: white;
                 border: none;
             }
-            
+
             .hero-button.secondary {
                 background: rgba(255, 255, 255, 0.9);
                 color: #ff5cf4;
                 border: 1px solid #ff5cf4;
             }
-            
+
             .hero-nav {
                 width: 40px;
                 height: 40px;
@@ -409,20 +430,20 @@ $conn->close();
                 background: rgba(0, 0, 0, 0.6);
                 backdrop-filter: blur(10px);
             }
-            
+
             .hero-nav.prev {
                 left: 10px;
             }
-            
+
             .hero-nav.next {
                 right: 10px;
             }
-            
+
             .hero-nav:hover {
                 background: rgba(255, 92, 244, 0.8);
                 transform: translateY(-50%) scale(1.05);
             }
-            
+
             .hero-dots {
                 position: absolute;
                 bottom: 8px;
@@ -433,19 +454,19 @@ $conn->close();
                 border-radius: 15px;
                 backdrop-filter: blur(10px);
             }
-            
+
             .hero-dot {
                 width: 8px;
                 height: 8px;
                 background: rgba(255, 255, 255, 0.6);
             }
-            
+
             .hero-dot.active {
                 background: #ff5cf4;
                 transform: scale(1.2);
             }
         }
-        
+
         /* Extra small mobile screens */
         @media (max-width: 480px) {
             .hero-carousel {
@@ -453,89 +474,90 @@ $conn->close();
                 min-height: 280px;
                 border-radius: 8px;
             }
-            
+
             .hero-content {
                 padding: 12px;
             }
-            
+
             .hero-title {
                 font-size: 1.25rem;
                 margin-bottom: 0.25rem;
             }
-            
+
             .hero-description {
                 font-size: 0.75rem;
                 margin-bottom: 0.5rem;
                 -webkit-line-clamp: 1;
             }
-            
+
             .hero-price {
                 font-size: 1.1rem;
                 margin-bottom: 0.5rem;
             }
-            
+
             .hero-button {
                 padding: 6px 12px;
                 font-size: 0.75rem;
                 min-width: 100px;
             }
-            
+
             .hero-nav {
                 width: 35px;
                 height: 35px;
             }
-            
+
             .hero-nav.prev {
                 left: 8px;
             }
-            
+
             .hero-nav.next {
                 right: 8px;
             }
-            
+
             .hero-dots {
                 bottom: 6px;
                 padding: 4px 10px;
             }
-            
+
             .hero-dot {
                 width: 6px;
                 height: 6px;
             }
         }
-        
+
         /* Search bar responsive */
         @media (max-width: 640px) {
             .search-container {
                 flex-direction: column;
                 gap: 8px;
             }
-            
+
             .search-container input {
                 width: 100%;
             }
-            
+
             .search-container button {
                 width: 100%;
             }
         }
-        
+
         /* Touch-friendly improvements */
         @media (hover: none) and (pointer: coarse) {
             .hero-nav {
                 background: rgba(0, 0, 0, 0.7);
             }
-            
+
             .hero-button:active {
                 transform: scale(0.98);
             }
-            
+
             .category-tab:active {
                 transform: translateY(-1px);
             }
         }
     </style>
 </head>
+
 <body class="bg-[#FFA9F9]">
 
     <div id="cataloguePageContainer">
@@ -554,9 +576,9 @@ $conn->close();
                     </button>
 
                     <div id="cataloguePopupMenu"
-                         class="absolute top-full right-0 mt-2 w-56 md:w-60
+                        class="absolute top-full right-0 mt-2 w-56 md:w-60
                                 bg-white/95 backdrop-blur-md p-3 md:p-4 rounded-xl shadow-2xl space-y-1
-                                opacity-0 pointer-events-none origin-top-right z-[60]" style="display: none;"> 
+                                opacity-0 pointer-events-none origin-top-right z-[60]" style="display: none;">
                         <a href="../index.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Home</a>
                         <a href="../inventory.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Inventory</a>
                         <a href="../friends.php" class="catalogue-nav-link block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left py-1.5 px-2 rounded-md hover:bg-pink-100">Friends</a>
@@ -571,7 +593,7 @@ $conn->close();
             </div>
         </header>
 
-        <div class="relative pt-20 md:pt-26 flex flex-col items-center w-full"> 
+        <div class="relative pt-20 md:pt-26 flex flex-col items-center w-full">
             <!-- Hero Featured Games Section -->
             <section id="featuredSection" class="w-full bg-[#FFE4E1] py-8 md:py-12 lg:py-20">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6">
@@ -579,28 +601,28 @@ $conn->close();
                         <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#ff5cf4] mb-2 md:mb-4 apply-custom-title-font">Featured & Popular Games</h2>
                         <p class="text-sm sm:text-base md:text-lg lg:text-xl text-[#ff1cf0] opacity-90 apply-custom-title-font">Discover the hottest titles and player favorites</p>
                     </div>
-                    
+
                     <!-- Hero Carousel -->
                     <div class="hero-carousel" id="heroCarousel">
-                        <?php foreach ($carousel_games_data as $index => $game): ?> 
+                        <?php foreach ($carousel_games_data as $index => $game): ?>
                             <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>">
-                                <img src="<?php echo htmlspecialchars($game['image_url'] ?: '../assets/image_placeholder.png'); ?>" 
-                                     alt="<?php echo htmlspecialchars($game['title']); ?>" 
-                                     class="hero-slide-bg" />
+                                <img src="<?php echo htmlspecialchars($game['image_url'] ?: '../assets/image_placeholder.png'); ?>"
+                                    alt="<?php echo htmlspecialchars($game['title']); ?>"
+                                    class="hero-slide-bg" />
                                 <div class="hero-overlay"></div>
                                 <div class="hero-content">
                                     <h3 class="hero-title"><?php echo htmlspecialchars($game['title']); ?></h3>
                                     <p class="hero-description"><?php echo htmlspecialchars($game['description'] ?: 'Experience this amazing game with stunning graphics and immersive gameplay.'); ?></p>
                                     <div class="hero-price">$<?php echo number_format($game['price'], 2); ?></div>
                                     <div class="hero-buttons">
-                                        <button 
-                                            class="hero-button primary cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?>" 
+                                        <button
+                                            class="hero-button primary cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?>"
                                             data-game-id="<?php echo $game['id']; ?>">
                                             <?php echo $game['in_cart'] ? "In Cart ({$game['cart_quantity']})" : 'Add to Cart'; ?>
                                         </button>
-                                        <button 
-                                            class="hero-button secondary wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?>" 
-                                            data-game-id="<?php echo $game['id']; ?>" 
+                                        <button
+                                            class="hero-button secondary wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?>"
+                                            data-game-id="<?php echo $game['id']; ?>"
                                             data-action="<?php echo $game['in_wishlist'] ? 'remove' : 'add'; ?>">
                                             <?php echo $game['in_wishlist'] ? 'In Wishlist' : 'Add to Wishlist'; ?>
                                         </button>
@@ -608,7 +630,7 @@ $conn->close();
                                 </div>
                             </div>
                         <?php endforeach; ?>
-                        
+
                         <!-- Navigation -->
                         <button class="hero-nav prev" id="heroPrevBtn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -620,7 +642,7 @@ $conn->close();
                                 <polyline points="9,18 15,12 9,6"></polyline>
                             </svg>
                         </button>
-                        
+
                         <!-- Dots -->
                         <div class="hero-dots -mb-15" id="heroDots">
                             <?php for ($i = 0; $i < count($carousel_games_data); $i++): ?>
@@ -632,30 +654,28 @@ $conn->close();
             </section>
 
             <!-- Main Catalogue Section -->
-            <section id="catalog" class="w-full bg-[#E6E6FA] py-6 md:py-8 lg:py-12">
+            <section id="catalog" class="w-full bg-[#FFE4E1] py-6 md:py-8 lg:py-12">
                 <div class="container mx-auto px-4">
                     <div id="catalogTitle" class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-6 md:mb-8">
                         <img src="../assets/aperior.svg" alt="Aperior Logo" class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mb-3 md:mb-0 md:mr-4" />
                         <h2 class="apply-custom-title-font text-2xl sm:text-3xl md:text-4xl font-bold text-[#ff5cf4] text-center md:text-left transition-all duration-300 ease-in-out hover:scale-110 hover:text-shadow-pink origin-center md:origin-left">Game Catalog</h2>
                     </div>
-                    
+
                     <!-- Search and Filter Controls -->
                     <div class="mb-6 space-y-4">
                         <!-- Search Bar -->
                         <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
                             <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Search Games</h3>
                             <div class="search-container flex gap-2">
-                                <input 
-                                    type="text" 
-                                    id="gameSearch" 
-                                    placeholder="Search games by title..." 
+                                <input
+                                    type="text"
+                                    id="gameSearch"
+                                    placeholder="Search games by title..."
                                     class="flex-1 px-3 md:px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5cf4] focus:border-[#ff5cf4] text-sm md:text-base"
-                                    onkeyup="filterGames()"
-                                >
-                                <button 
-                                    onclick="clearSearch()" 
-                                    class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap"
-                                >
+                                    onkeyup="filterGames()">
+                                <button
+                                    onclick="clearSearch()"
+                                    class="px-3 md:px-4 py-2 bg-[#ff5cf4] text-white rounded-lg hover:bg-[#ff1cf0] transition-colors text-sm md:text-base whitespace-nowrap">
                                     Clear
                                 </button>
                             </div>
@@ -694,15 +714,15 @@ $conn->close();
                                         <h3 class="text-base md:text-lg font-semibold text-pink-700"><?php echo htmlspecialchars($game['title']); ?></h3>
                                         <p class="text-xs md:text-sm text-gray-600"><?php echo htmlspecialchars($game['genre'] ?: 'N/A'); ?></p>
                                         <p class="text-sm md:text-base font-bold text-pink-500 my-1">$<?php echo number_format($game['price'], 2); ?></p>
-                                        <button 
-                                            class="action-button wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?> w-full mb-1 text-xs md:text-sm" 
-                                            data-game-id="<?php echo $game['id']; ?>" 
+                                        <button
+                                            class="action-button wishlist-btn <?php echo $game['in_wishlist'] ? 'in-wishlist' : ''; ?> w-full mb-1 text-xs md:text-sm"
+                                            data-game-id="<?php echo $game['id']; ?>"
                                             data-action="<?php echo $game['in_wishlist'] ? 'remove' : 'add'; ?>">
                                             <?php echo $game['in_wishlist'] ? 'In Wishlist' : 'Add to Wishlist'; ?>
                                         </button>
-                                        <button 
-                                            class="action-button cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?> w-full text-xs md:text-sm" 
-                                            data-game-id="<?php echo $game['id']; ?>"> 
+                                        <button
+                                            class="action-button cart-btn <?php echo $game['in_cart'] ? 'in-cart' : ''; ?> w-full text-xs md:text-sm"
+                                            data-game-id="<?php echo $game['id']; ?>">
                                             <?php echo $game['in_cart'] ? "In Cart ({$game['cart_quantity']})" : 'Add to Cart'; ?>
                                         </button>
                                     </div>
@@ -714,12 +734,12 @@ $conn->close();
             </section>
         </div>
     </div>
-    
+
     <script>
         const isUserLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
         let currentCategory = 'all';
         let currentSearchTerm = '';
-        
+
         // Hero Carousel functionality
         let currentHeroSlide = 0;
         const heroSlides = document.querySelectorAll('.hero-slide');
@@ -727,45 +747,45 @@ $conn->close();
         const heroDots = document.querySelectorAll('.hero-dot');
         const heroPrevBtn = document.getElementById('heroPrevBtn');
         const heroNextBtn = document.getElementById('heroNextBtn');
-        
+
         function updateHeroCarousel() {
             // Hide all slides
             heroSlides.forEach((slide, index) => {
                 slide.classList.toggle('active', index === currentHeroSlide);
             });
-            
+
             // Update dots
             heroDots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentHeroSlide);
             });
         }
-        
+
         function nextHeroSlide() {
             currentHeroSlide = (currentHeroSlide + 1) % totalHeroSlides;
             updateHeroCarousel();
         }
-        
+
         function prevHeroSlide() {
             currentHeroSlide = (currentHeroSlide - 1 + totalHeroSlides) % totalHeroSlides;
             updateHeroCarousel();
         }
-        
+
         function goToHeroSlide(index) {
             currentHeroSlide = index;
             updateHeroCarousel();
         }
-        
+
         // Event listeners for hero carousel
         if (heroNextBtn) heroNextBtn.addEventListener('click', nextHeroSlide);
         if (heroPrevBtn) heroPrevBtn.addEventListener('click', prevHeroSlide);
-        
+
         heroDots.forEach((dot, index) => {
             dot.addEventListener('click', () => goToHeroSlide(index));
         });
-        
+
         // Auto-play hero carousel
         let heroAutoPlayInterval = setInterval(nextHeroSlide, 5000);
-        
+
         // Pause auto-play on hover
         const heroCarousel = document.getElementById('heroCarousel');
         if (heroCarousel) {
@@ -774,20 +794,22 @@ $conn->close();
                 heroAutoPlayInterval = setInterval(nextHeroSlide, 5000);
             });
         }
-        
+
         // Touch support for mobile
         let startX = 0;
         let endX = 0;
-        
+
         if (heroCarousel) {
             heroCarousel.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
-            }, { passive: true });
-            
+            }, {
+                passive: true
+            });
+
             heroCarousel.addEventListener('touchend', (e) => {
                 endX = e.changedTouches[0].clientX;
                 const diff = startX - endX;
-                
+
                 if (Math.abs(diff) > 50) { // Minimum swipe distance
                     if (diff > 0) {
                         nextHeroSlide();
@@ -795,12 +817,14 @@ $conn->close();
                         prevHeroSlide();
                     }
                 }
-            }, { passive: true });
+            }, {
+                passive: true
+            });
         }
-        
+
         // Initialize hero carousel
         updateHeroCarousel();
-        
+
         // Simple menu toggle
         document.getElementById('catalogueMenuButton').addEventListener('click', function() {
             const menu = document.getElementById('cataloguePopupMenu');
@@ -809,7 +833,7 @@ $conn->close();
             menu.style.opacity = isVisible ? '0' : '1';
             menu.style.pointerEvents = isVisible ? 'none' : 'auto';
         });
-        
+
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('cataloguePopupMenu');
@@ -818,7 +842,7 @@ $conn->close();
                 menu.style.display = 'none';
             }
         });
-        
+
         // Category selection
         function selectCategory(category, element) {
             // Remove active class from all tabs
@@ -828,22 +852,22 @@ $conn->close();
             currentCategory = category;
             filterGames();
         }
-        
+
         // Game filtering
         function filterGames() {
             const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
             currentSearchTerm = searchTerm;
-            
+
             const gameCards = document.querySelectorAll('.game-card');
             let visibleCount = 0;
-            
+
             gameCards.forEach(card => {
                 const title = card.dataset.title;
                 const genre = card.dataset.genre;
-                
+
                 const matchesSearch = searchTerm === '' || title.includes(searchTerm);
                 const matchesCategory = currentCategory === 'all' || genre === currentCategory;
-                
+
                 if (matchesSearch && matchesCategory) {
                     card.style.display = 'block';
                     visibleCount++;
@@ -851,17 +875,17 @@ $conn->close();
                     card.style.display = 'none';
                 }
             });
-            
+
             document.getElementById('gameCount').textContent = `Showing ${visibleCount} games`;
         }
-        
+
         // Clear search
         function clearSearch() {
             document.getElementById('gameSearch').value = '';
             currentSearchTerm = '';
             filterGames();
         }
-        
+
         // Button handlers using simple event delegation
         document.addEventListener('click', async function(e) {
             // Handle wishlist buttons
@@ -870,29 +894,29 @@ $conn->close();
                 const button = e.target;
                 const gameId = button.dataset.gameId;
                 const action = button.dataset.action;
-                
+
                 if (!isUserLoggedIn) {
                     alert('Please log in to manage your wishlist.');
                     window.location.href = '../login.php';
                     return;
                 }
-                
+
                 button.disabled = true;
                 const originalText = button.textContent;
                 button.textContent = 'Processing...';
-                
+
                 try {
                     const formData = new FormData();
                     formData.append('game_id', gameId);
                     formData.append('action', action);
-                    
+
                     const response = await fetch('../update_wishlist.php', {
                         method: 'POST',
                         body: formData
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         if (action === 'add') {
                             button.textContent = 'In Wishlist';
@@ -915,29 +939,29 @@ $conn->close();
                     button.disabled = false;
                 }
             }
-            
+
             // Handle cart buttons
             if (e.target.classList.contains('cart-btn')) {
                 e.preventDefault();
                 const button = e.target;
                 const gameId = button.dataset.gameId;
-                
+
                 if (!isUserLoggedIn) {
                     alert('Please log in to add items to your cart.');
                     window.location.href = '../login.php';
                     return;
                 }
-                
+
                 button.disabled = true;
                 const originalText = button.textContent;
                 button.textContent = 'Adding...';
-                
+
                 try {
                     const formData = new FormData();
                     formData.append('game_id', gameId);
                     formData.append('quantity', 1);
                     formData.append('action', 'add');
-                    
+
                     const response = await fetch('../update_cart.php', {
                         method: 'POST',
                         headers: {
@@ -945,9 +969,9 @@ $conn->close();
                         },
                         body: formData
                     });
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         button.textContent = 'Added to Cart!';
                         button.classList.add('in-cart');
@@ -969,4 +993,5 @@ $conn->close();
         });
     </script>
 </body>
+
 </html>

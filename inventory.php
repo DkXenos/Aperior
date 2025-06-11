@@ -132,14 +132,16 @@ $recent_games = array_slice($inventory_games, 0, 5);
                 </div>
                 <div class="flex-1 w-full sm:w-auto sm:max-w-lg mx-0 sm:mx-4">
                     <div class="relative">
-                        <input type="text" placeholder="Search games..." class="w-full bg-white/90 border border-pink-200 text-gray-800 px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                        <input 
+                            type="text" 
+                            id="gameSearch"
+                            placeholder="Search games..." 
+                            class="w-full bg-white/90 border border-pink-200 text-gray-800 px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            onkeyup="searchGames()">
                         <i class="fas fa-search absolute right-3 top-2.5 text-pink-400"></i>
                     </div>
                 </div>
-                <div class="w-full sm:w-auto flex justify-center">
-                    <button class="bg-pink-300 hover:bg-pink-400 text-pink-800 px-3 py-1 rounded text-sm">
-                        <i class="fas fa-sliders mr-1"></i> Filter
-                    </button>
+                <div>
                 </div>
             </div>
 
@@ -227,15 +229,83 @@ $recent_games = array_slice($inventory_games, 0, 5);
         document.getElementById('grid-view-btn').addEventListener('click', function() {
             document.getElementById('grid-view').classList.remove('hidden');
             document.getElementById('list-view').classList.add('hidden');
-            this.classList.add('active');
-            document.getElementById('list-view-btn').classList.remove('active');
+            this.classList.add('active', 'bg-pink-500', 'text-white');
+            this.classList.remove('bg-pink-300', 'text-pink-800');
+            const listBtn = document.getElementById('list-view-btn');
+            listBtn.classList.remove('active', 'bg-pink-500', 'text-white');
+            listBtn.classList.add('bg-pink-300', 'text-pink-800');
         });
 
         document.getElementById('list-view-btn').addEventListener('click', function() {
             document.getElementById('list-view').classList.remove('hidden');
             document.getElementById('grid-view').classList.add('hidden');
-            this.classList.add('active');
-            document.getElementById('grid-view-btn').classList.remove('active');
+            this.classList.add('active', 'bg-pink-500', 'text-white');
+            this.classList.remove('bg-pink-300', 'text-pink-800');
+            const gridBtn = document.getElementById('grid-view-btn');
+            gridBtn.classList.remove('active', 'bg-pink-500', 'text-white');
+            gridBtn.classList.add('bg-pink-300', 'text-pink-800');
+        });
+
+        // Search functionality
+        function searchGames() {
+            const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
+            const gridCards = document.querySelectorAll('#grid-view .game-card');
+            const listCards = document.querySelectorAll('#list-view .game-card');
+            
+            // Search in grid view
+            gridCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Search in list view
+            listCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update recently added section
+            const recentSection = document.querySelector('.mb-8');
+            if (recentSection && searchTerm.length > 0) {
+                const recentCards = recentSection.querySelectorAll('.game-card');
+                let hasVisibleRecentGames = false;
+                
+                recentCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        hasVisibleRecentGames = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Hide/show recent section based on matches
+                recentSection.style.display = hasVisibleRecentGames ? 'block' : 'none';
+            } else if (recentSection) {
+                // Show all recent games when search is cleared
+                const recentCards = recentSection.querySelectorAll('.game-card');
+                recentCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                recentSection.style.display = 'block';
+            }
+        }
+
+        // Clear search when escape key is pressed
+        document.getElementById('gameSearch').addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                this.value = '';
+                searchGames();
+            }
         });
 
         // Play button functionality

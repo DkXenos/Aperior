@@ -89,7 +89,6 @@ $conn->close();
             <h3 class="text-blue-800 font-medium">Debug Info:</h3>
             <p class="text-blue-700">Developer ID: <?php echo $developer_id; ?></p>
             <p class="text-blue-700">Games found: <?php echo count($developer_games); ?></p>
-            <p class="text-blue-700">Session data: <?php echo isset($_SESSION['company_name']) ? 'Company name set' : 'Company name missing'; ?></p>
         </div>
 
         <!-- Success Message -->
@@ -106,7 +105,7 @@ $conn->close();
         <?php endif; ?>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="p-2 bg-purple-100 rounded-lg">
@@ -126,17 +125,6 @@ $conn->close();
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Featured Games</p>
                         <p class="text-2xl font-bold text-gray-900"><?php echo count(array_filter($developer_games, function($game) { return $game['is_featured']; })); ?></p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center">
-                    <div class="p-2 bg-blue-100 rounded-lg">
-                        <i class="fas fa-chart-line text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Revenue</p>
-                        <p class="text-2xl font-bold text-gray-900">$0.00</p>
                     </div>
                 </div>
             </div>
@@ -178,10 +166,7 @@ $conn->close();
                                     <p class="text-sm text-gray-600 mb-2"><?php echo htmlspecialchars($game['genre']); ?></p>
                                     <p class="text-lg font-bold text-purple-600 mb-3">$<?php echo number_format($game['price'], 2); ?></p>
                                     <div class="flex space-x-2">
-                                        <a href="edit_game.php?id=<?php echo $game['id']; ?>" 
-                                           class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-3 rounded text-sm transition-colors">
-                                            <i class="fas fa-edit mr-1"></i>Edit
-                                        </a>
+                                            
                                         <a href="delete_game.php?id=<?php echo $game['id']; ?>" 
                                            onclick="return confirm('Are you sure you want to delete this game?')"
                                            class="flex-1 bg-red-600 hover:bg-red-700 text-white text-center py-2 px-3 rounded text-sm transition-colors">
@@ -197,13 +182,13 @@ $conn->close();
         </div>
 
         <!-- Quick Database Fix -->
-        <div class="mt-8 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+        <!-- <div class="mt-8 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
             <h3 class="text-yellow-800 font-medium mb-2">Having issues? Try this quick fix:</h3>
             <p class="text-yellow-700 text-sm mb-3">If you can't see your games or login issues persist, click the button below to reset the database structure:</p>
             <a href="fix_database.php" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md transition-colors text-sm">
                 <i class="fas fa-wrench mr-2"></i>Fix Database Issues
             </a>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>

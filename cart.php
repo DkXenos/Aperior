@@ -62,7 +62,7 @@ $conn->close();
             <div class="space-y-4">
                 <?php foreach ($cart_items as $item): ?>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border border-pink-200 rounded-lg bg-pink-50 space-y-3 sm:space-y-0">
-                        <!-- Game Info -->
+                        
                         <div class="flex items-center">
                             <img src="<?php echo htmlspecialchars($item['image_url'] ?: './assets/image_placeholder.png'); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded mr-3 sm:mr-4 flex-shrink-0">
                             <div class="min-w-0 flex-1">
@@ -71,9 +71,9 @@ $conn->close();
                             </div>
                         </div>
                         
-                        <!-- Controls and Price -->
+                        
                         <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                            <!-- Quantity Controls -->
+                            
                             <div class="flex items-center justify-between sm:justify-start space-x-2">
                                 <form action="update_cart.php" method="POST" class="flex items-center">
                                     <input type="hidden" name="action" value="update">
@@ -90,7 +90,7 @@ $conn->close();
                                 </form>
                             </div>
                             
-                            <!-- Item Total -->
+                            
                             <div class="text-right sm:text-left">
                                 <p class="text-base sm:text-lg font-semibold text-pink-600">$<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
                             </div>
@@ -99,7 +99,7 @@ $conn->close();
                 <?php endforeach; ?>
             </div>
 
-            <!-- Total and Checkout -->
+            
             <div class="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-pink-300">
                 <div class="flex flex-col sm:flex-row sm:justify-end sm:items-center space-y-4 sm:space-y-0">
                     <div class="text-center sm:text-right">

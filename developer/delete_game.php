@@ -16,7 +16,7 @@ if ($game_id <= 0) {
     exit();
 }
 
-// Verify that the game belongs to this developer
+
 $verify_stmt = $conn->prepare("SELECT title FROM games WHERE id = ? AND developer_id = ?");
 $verify_stmt->bind_param("ii", $game_id, $developer_id);
 $verify_stmt->execute();
@@ -31,32 +31,32 @@ if ($result->num_rows === 0) {
 $game = $result->fetch_assoc();
 $game_title = $game['title'];
 $verify_stmt->close();
+    //inii
 
-// Handle the deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
     try {
         $conn->begin_transaction();
         
-        // Remove from user wishlists
+        
         $remove_wishlist = $conn->prepare("DELETE FROM wishlist_items WHERE game_id = ?");
         $remove_wishlist->bind_param("i", $game_id);
         $remove_wishlist->execute();
         $remove_wishlist->close();
         
-        // Remove from user carts
+        
         $remove_cart = $conn->prepare("DELETE FROM cart_items WHERE game_id = ?");
         $remove_cart->bind_param("i", $game_id);
         $remove_cart->execute();
         $remove_cart->close();
         
-        // Note: We might want to keep user_inventory records for purchased games
-        // or handle refunds. For now, we'll remove them as well.
+        
+        
         $remove_inventory = $conn->prepare("DELETE FROM user_inventory WHERE game_id = ?");
         $remove_inventory->bind_param("i", $game_id);
         $remove_inventory->execute();
         $remove_inventory->close();
         
-        // Finally, delete the game
+        
         $delete_game = $conn->prepare("DELETE FROM games WHERE id = ? AND developer_id = ?");
         $delete_game->bind_param("ii", $game_id, $developer_id);
         $delete_game->execute();

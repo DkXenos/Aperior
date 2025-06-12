@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $inventory_games = [];
-
+//read disiniii
 $stmt = $conn->prepare(
     "SELECT g.id as game_id, g.title, g.image_url, g.description, ui.purchase_date
      FROM user_inventory ui

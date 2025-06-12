@@ -12,14 +12,14 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="./styles.css">
     <style>
-        /* SVG Background Assets - Always behind content */
+        
         .bg-asset {
             z-index: -10;
             pointer-events: none;
             position: absolute;
         }
         
-        /* Main cloud background - covers entire screen */
+        
         .bg-main-cloud {
             z-index: -20;
             pointer-events: none;
@@ -32,13 +32,13 @@ session_start();
             opacity: 0.4;
         }
         
-        /* Content layers */
+        
         .content-layer {
             z-index: 10;
             position: relative;
         }
         
-        /* Navigation layer */
+        
         .nav-layer {
             z-index: 20;
             position: relative;
@@ -54,7 +54,7 @@ session_start();
             top: 10px;
         }
 
-        /* Initial states for animated elements */
+        
         .animate-mountain-front {
             transform: translateY(200px);
             opacity: 0;

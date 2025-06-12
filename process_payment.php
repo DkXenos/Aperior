@@ -35,7 +35,7 @@ try {
 
     
     
-    
+     //INSERT DISINI
     $insert_inventory_stmt = $conn->prepare("INSERT IGNORE INTO user_inventory (user_id, game_id, purchase_date) VALUES (?, ?, NOW())");
     
     while ($item = $cart_result->fetch_assoc()) {

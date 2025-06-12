@@ -141,7 +141,7 @@ $conn->close();
             display: none;
         }
 
-        /* Hero Carousel Styles */
+        
         .hero-carousel {
             position: relative;
             height: 500px;
@@ -314,7 +314,7 @@ $conn->close();
             transform: translateY(-2px);
         }
 
-        /* Mobile Responsive Styles */
+        
         @media (max-width: 768px) {
             .hero-carousel {
                 height: 350px;
@@ -467,7 +467,7 @@ $conn->close();
             }
         }
 
-        /* Extra small mobile screens */
+        
         @media (max-width: 480px) {
             .hero-carousel {
                 height: 280px;
@@ -525,7 +525,7 @@ $conn->close();
             }
         }
 
-        /* Search bar responsive */
+        
         @media (max-width: 640px) {
             .search-container {
                 flex-direction: column;
@@ -541,7 +541,7 @@ $conn->close();
             }
         }
 
-        /* Touch-friendly improvements */
+        
         @media (hover: none) and (pointer: coarse) {
             .hero-nav {
                 background: rgba(0, 0, 0, 0.7);
@@ -594,7 +594,7 @@ $conn->close();
         </header>
 
         <div class="relative pt-20 md:pt-26 flex flex-col items-center w-full">
-            <!-- Hero Featured Games Section -->
+            
             <section id="featuredSection" class="w-full bg-[#FFE4E1] py-8 md:py-12 lg:py-20">
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6">
                     <div id="featuredTitle" class="text-center mb-6 md:mb-8">
@@ -602,7 +602,7 @@ $conn->close();
                         <p class="text-sm sm:text-base md:text-lg lg:text-xl text-[#ff1cf0] opacity-90 apply-custom-title-font">Discover the hottest titles and player favorites</p>
                     </div>
 
-                    <!-- Hero Carousel -->
+                    
                     <div class="hero-carousel" id="heroCarousel">
                         <?php foreach ($carousel_games_data as $index => $game): ?>
                             <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>">
@@ -631,7 +631,7 @@ $conn->close();
                             </div>
                         <?php endforeach; ?>
 
-                        <!-- Navigation -->
+                        
                         <button class="hero-nav prev" id="heroPrevBtn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="15,18 9,12 15,6"></polyline>
@@ -643,7 +643,7 @@ $conn->close();
                             </svg>
                         </button>
 
-                        <!-- Dots -->
+                        
                         <div class="hero-dots -mb-15" id="heroDots">
                             <?php for ($i = 0; $i < count($carousel_games_data); $i++): ?>
                                 <div class="hero-dot <?php echo $i === 0 ? 'active' : ''; ?>" data-index="<?php echo $i; ?>"></div>
@@ -653,7 +653,7 @@ $conn->close();
                 </div>
             </section>
 
-            <!-- Main Catalogue Section -->
+            
             <section id="catalog" class="w-full bg-[#FFE4E1] py-6 md:py-8 lg:py-12">
                 <div class="container mx-auto px-4">
                     <div id="catalogTitle" class="flex flex-col md:flex-row items-center justify-center md:justify-start mb-6 md:mb-8">
@@ -661,9 +661,9 @@ $conn->close();
                         <h2 class="apply-custom-title-font text-2xl sm:text-3xl md:text-4xl font-bold text-[#ff5cf4] text-center md:text-left transition-all duration-300 ease-in-out hover:scale-110 hover:text-shadow-pink origin-center md:origin-left">Game Catalog</h2>
                     </div>
 
-                    <!-- Search and Filter Controls -->
+                    
                     <div class="mb-6 space-y-4">
-                        <!-- Search Bar -->
+                        
                         <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
                             <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Search Games</h3>
                             <div class="search-container flex gap-2">
@@ -676,7 +676,7 @@ $conn->close();
                                 </div>
                         </div>
 
-                        <!-- Category Tabs -->
+                        
                         <div class="bg-pink-200 rounded-lg p-4 shadow-xl">
                             <h3 class="text-base md:text-lg font-bold text-[#ff5cf4] mb-3 md:mb-4">Browse by Category</h3>
                             <div class="flex flex-wrap gap-2">
@@ -692,7 +692,7 @@ $conn->close();
                         </div>
                     </div>
 
-                    <!-- Games Grid -->
+                    
                     <div class="bg-pink-100 rounded-lg shadow-xl overflow-hidden">
                         <div class="bg-pink-100 p-3 md:p-4 border-b border-pink-200">
                             <h4 class="text-base md:text-lg font-bold text-[#ff5cf4]">Available Games</h4>
@@ -735,7 +735,7 @@ $conn->close();
         let currentCategory = 'all';
         let currentSearchTerm = '';
 
-        // Hero Carousel functionality
+        //
         let currentHeroSlide = 0;
         const heroSlides = document.querySelectorAll('.hero-slide');
         const totalHeroSlides = heroSlides.length;
@@ -744,12 +744,12 @@ $conn->close();
         const heroNextBtn = document.getElementById('heroNextBtn');
 
         function updateHeroCarousel() {
-            // Hide all slides
+            
             heroSlides.forEach((slide, index) => {
                 slide.classList.toggle('active', index === currentHeroSlide);
             });
 
-            // Update dots
+            
             heroDots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentHeroSlide);
             });
@@ -770,7 +770,7 @@ $conn->close();
             updateHeroCarousel();
         }
 
-        // Event listeners for hero carousel
+        
         if (heroNextBtn) heroNextBtn.addEventListener('click', nextHeroSlide);
         if (heroPrevBtn) heroPrevBtn.addEventListener('click', prevHeroSlide);
 
@@ -778,10 +778,10 @@ $conn->close();
             dot.addEventListener('click', () => goToHeroSlide(index));
         });
 
-        // Auto-play hero carousel
+        
         let heroAutoPlayInterval = setInterval(nextHeroSlide, 5000);
 
-        // Pause auto-play on hover
+        
         const heroCarousel = document.getElementById('heroCarousel');
         if (heroCarousel) {
             heroCarousel.addEventListener('mouseenter', () => clearInterval(heroAutoPlayInterval));
@@ -790,7 +790,7 @@ $conn->close();
             });
         }
 
-        // Touch support for mobile
+        
         let startX = 0;
         let endX = 0;
 
@@ -805,7 +805,7 @@ $conn->close();
                 endX = e.changedTouches[0].clientX;
                 const diff = startX - endX;
 
-                if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (Math.abs(diff) > 50) { 
                     if (diff > 0) {
                         nextHeroSlide();
                     } else {
@@ -817,10 +817,10 @@ $conn->close();
             });
         }
 
-        // Initialize hero carousel
+        
         updateHeroCarousel();
 
-        // Simple menu toggle
+        
         document.getElementById('catalogueMenuButton').addEventListener('click', function() {
             const menu = document.getElementById('cataloguePopupMenu');
             const isVisible = menu.style.display === 'block';
@@ -829,7 +829,7 @@ $conn->close();
             menu.style.pointerEvents = isVisible ? 'none' : 'auto';
         });
 
-        // Close menu when clicking outside
+        
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('cataloguePopupMenu');
             const button = document.getElementById('catalogueMenuButton');
@@ -838,17 +838,17 @@ $conn->close();
             }
         });
 
-        // Category selection
+        
         function selectCategory(category, element) {
-            // Remove active class from all tabs
+            
             document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
-            // Add active class to clicked tab
+            
             element.classList.add('active');
             currentCategory = category;
             filterGames();
         }
 
-        // Game filtering
+        
         function filterGames() {
             const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
             currentSearchTerm = searchTerm;
@@ -874,16 +874,16 @@ $conn->close();
             document.getElementById('gameCount').textContent = `Showing ${visibleCount} games`;
         }
 
-        // Clear search
+        
         function clearSearch() {
             document.getElementById('gameSearch').value = '';
             currentSearchTerm = '';
             filterGames();
         }
 
-        // Button handlers using simple event delegation
+        
         document.addEventListener('click', async function(e) {
-            // Handle wishlist buttons
+            
             if (e.target.classList.contains('wishlist-btn')) {
                 e.preventDefault();
                 const button = e.target;
@@ -923,19 +923,19 @@ $conn->close();
                             button.dataset.action = 'add';
                         }
                     } else {
-                        // Remove this alert line - just reset the button
+                        
                         button.textContent = originalText;
                     }
                 } catch (error) {
                     console.error('Wishlist error:', error);
-                    // Remove this alert too - just reset the button
+                    
                     button.textContent = originalText;
                 } finally {
                     button.disabled = false;
                 }
             }
 
-            // Handle cart buttons
+            
             if (e.target.classList.contains('cart-btn')) {
                 e.preventDefault();
                 const button = e.target;

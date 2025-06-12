@@ -164,7 +164,7 @@ $conn->close();
             <h1 class="text-3xl font-bold text-pink-600 apply-custom-title-font">Friends</h1>
         </div>
 
-        <!-- Tab Navigation -->
+        
         <div class="flex space-x-2 mb-6">
             <button 
                 class="tab-button active px-6 py-3 bg-pink-100 text-pink-700 rounded-lg font-medium hover:bg-pink-200 transition-colors"
@@ -184,7 +184,7 @@ $conn->close();
             </button>
         </div>
 
-        <!-- Find Friends Tab Content -->
+        
         <div id="find-friends-content" class="tab-content active">
             <div class="mb-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -231,7 +231,7 @@ $conn->close();
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Search/Filter Section -->
+                
                 <div class="mt-8 bg-pink-50 rounded-lg p-4">
                     <h3 class="text-lg font-semibold text-pink-700 mb-3">Find Specific Users</h3>
                     <div class="flex flex-col sm:flex-row gap-2">
@@ -253,7 +253,7 @@ $conn->close();
             <?php endif; ?>
         </div>
 
-        <!-- My Friends Tab Content -->
+        
         <div id="my-friends-content" class="tab-content">
             <div class="mb-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -316,7 +316,7 @@ $conn->close();
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Friends Search Section -->
+                
                 <div class="mt-8 bg-green-50 rounded-lg p-4">
                     <h3 class="text-lg font-semibold text-green-700 mb-3">Search Your Friends</h3>
                     <div class="flex flex-col sm:flex-row gap-2">
@@ -344,7 +344,7 @@ $conn->close();
         </p>
     </div>
 
-    <!-- Gift Modal -->
+    
     <div id="giftModal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <div class="flex justify-between items-center mb-4">

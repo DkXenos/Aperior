@@ -114,7 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <p class="mt-1 text-sm text-gray-500">Enter a direct link to your game's cover image (optional)</p>
                     
-                    <!-- Image Preview -->
                     <div id="image-preview" class="mt-3 hidden">
                         <p class="text-sm font-medium text-gray-700 mb-2">Preview:</p>
                         <img id="preview-img" src="" alt="Image preview" class="w-32 h-32 object-cover rounded-md border border-gray-300">
@@ -143,7 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </form>
 
-            <!-- Helpful Tips -->
             <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <h4 class="text-sm font-medium text-blue-800 mb-2">💡 Tips for finding game images:</h4>
                 <ul class="text-sm text-blue-700 space-y-1">
@@ -158,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
-        // Image preview functionality
+        //
         const imageUrlInput = document.getElementById('image_url');
         const imagePreview = document.getElementById('image-preview');
         const previewImg = document.getElementById('preview-img');
@@ -170,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 previewImg.src = url;
                 imagePreview.classList.remove('hidden');
                 
-                // Handle image load errors
+                
                 previewImg.onload = function() {
                     imagePreview.classList.remove('hidden');
                 };
@@ -194,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Form validation
+        
         document.querySelector('form').addEventListener('submit', function(e) {
             const title = document.getElementById('title').value.trim();
             const description = document.getElementById('description').value.trim();
@@ -213,13 +211,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return false;
             }
 
-            // Show loading state
+            
             const submitBtn = document.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Adding Game...';
             submitBtn.disabled = true;
         });
 
-        // Trigger preview on page load if URL exists
+        
         window.addEventListener('load', function() {
             if (imageUrlInput.value) {
                 imageUrlInput.dispatchEvent(new Event('input'));

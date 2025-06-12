@@ -30,7 +30,7 @@ if ($result) {
 $stmt->close();
 $conn->close();
 
-// Get recent games (last 5 purchased)
+
 $recent_games = array_slice($inventory_games, 0, 5);
 ?>
 <!DOCTYPE html>
@@ -95,9 +95,9 @@ $recent_games = array_slice($inventory_games, 0, 5);
 </head>
 
 <body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen text-gray-800">
-    <!-- Main Container -->
+    
     <div class="flex flex-col h-screen overflow-hidden">
-        <!-- Header -->
+        
         <div class="bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="./index.php" class="mr-2 text-pink-600 hover:text-pink-700">
@@ -112,9 +112,9 @@ $recent_games = array_slice($inventory_games, 0, 5);
             </a>
         </div>
 
-        <!-- Main Content -->
+        
         <div class="flex-1 flex flex-col h-full overflow-hidden">
-            <!-- Search/View Controls -->
+            
             <div class="bg-white/80 backdrop-blur-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="flex space-x-3 w-auto justify-center">
                     <button id="grid-view-btn" class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded text-sm active">
@@ -146,7 +146,7 @@ $recent_games = array_slice($inventory_games, 0, 5);
                 </div>
             </div>
 
-            <!-- Content Area -->
+            
             <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-gradient-to-br from-[#FFFBE6] to-[#FFEBFF]">
                 <?php if (isset($_SESSION['payment_message'])): ?>
                     <div class="mb-4 p-3 rounded-md bg-green-100 text-green-800 border border-green-200">
@@ -185,7 +185,7 @@ $recent_games = array_slice($inventory_games, 0, 5);
                         </a>
                     </div>
                 <?php else: ?>
-                    <!-- Grid View (default) -->
+                    
                     <div id="grid-view" class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         <?php foreach ($inventory_games as $game): ?>
                             <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md">
@@ -203,7 +203,7 @@ $recent_games = array_slice($inventory_games, 0, 5);
                         <?php endforeach; ?>
                     </div>
 
-                    <!-- List View (hidden by default) -->
+                    
                     <div id="list-view" class="hidden space-y-2">
                         <?php foreach ($inventory_games as $game): ?>
                             <div class="game-card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-md flex">

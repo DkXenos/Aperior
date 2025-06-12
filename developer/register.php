@@ -4,7 +4,7 @@ require '../db_connect.php';
 
 $message = '';
 
-// Create developer table if it doesn't exist
+//
 $create_table_query = "
 CREATE TABLE IF NOT EXISTS developers (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username) || empty($password) || empty($email) || empty($company_name)) {
         $message = "Please fill in all required fields.";
     } else {
-        // Check if username or email already exists in both users and developers tables
+        
         $stmt_check_users = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt_check_users->bind_param("ss", $username, $email);
         $stmt_check_users->execute();

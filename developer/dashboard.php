@@ -1,5 +1,5 @@
 <?php
-// Enable error reporting for debugging
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -15,13 +15,13 @@ $developer_id = $_SESSION['developer_id'];
 $developer_games = [];
 
 try {
-    // Check if developer_id column exists, if not add it (without foreign key constraint for now)
+    
     $check_column = $conn->query("SHOW COLUMNS FROM games LIKE 'developer_id'");
     if ($check_column->num_rows == 0) {
         $conn->query("ALTER TABLE games ADD COLUMN developer_id INT DEFAULT NULL");
     }
 
-    // Get developer's games
+    
     $stmt = $conn->prepare("SELECT id, title, description, price, image_url, genre, release_date, is_featured FROM games WHERE developer_id = ? ORDER BY release_date DESC");
     if (!$stmt) {
         throw new Exception("Prepare failed: " . $conn->error);
@@ -43,7 +43,7 @@ try {
     
 } catch (Exception $e) {
     error_log("Dashboard error: " . $e->getMessage());
-    // Continue with empty games array for now
+    
 }
 
 $conn->close();
@@ -59,7 +59,7 @@ $conn->close();
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <!-- Header -->
+    
     <header class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-6">
@@ -82,16 +82,16 @@ $conn->close();
         </div>
     </header>
 
-    <!-- Main Content -->
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Debug Info (remove in production) -->
+        
         <div class="mb-4 p-4 bg-blue-100 border border-blue-300 rounded-lg">
             <h3 class="text-blue-800 font-medium">Debug Info:</h3>
             <p class="text-blue-700">Developer ID: <?php echo $developer_id; ?></p>
             <p class="text-blue-700">Games found: <?php echo count($developer_games); ?></p>
         </div>
 
-        <!-- Success Message -->
+        
         <?php if (isset($_SESSION['success_message'])): ?>
             <div class="mb-6 p-4 rounded-lg bg-green-100 border border-green-400 text-green-700">
                 <div class="flex items-center">
@@ -104,7 +104,7 @@ $conn->close();
             </div>
         <?php endif; ?>
 
-        <!-- Stats Cards -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center">
@@ -130,7 +130,7 @@ $conn->close();
             </div>
         </div>
 
-        <!-- Games Management -->
+        
         <div class="bg-white rounded-lg shadow">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 class="text-lg font-medium text-gray-900">Your Games</h2>
@@ -180,15 +180,6 @@ $conn->close();
                 <?php endif; ?>
             </div>
         </div>
-
-        <!-- Quick Database Fix -->
-        <!-- <div class="mt-8 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
-            <h3 class="text-yellow-800 font-medium mb-2">Having issues? Try this quick fix:</h3>
-            <p class="text-yellow-700 text-sm mb-3">If you can't see your games or login issues persist, click the button below to reset the database structure:</p>
-            <a href="fix_database.php" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md transition-colors text-sm">
-                <i class="fas fa-wrench mr-2"></i>Fix Database Issues
-            </a>
-        </div> -->
     </div>
 </body>
 </html>

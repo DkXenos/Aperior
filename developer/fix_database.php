@@ -11,7 +11,7 @@ $messages = [];
 $errors = [];
 
 try {
-    // Fix 1: Ensure developer_id column exists in games table
+    
     $check_column = $conn->query("SHOW COLUMNS FROM games LIKE 'developer_id'");
     if ($check_column->num_rows == 0) {
         $conn->query("ALTER TABLE games ADD COLUMN developer_id INT DEFAULT NULL");
@@ -20,7 +20,7 @@ try {
         $messages[] = "developer_id column already exists";
     }
 
-    // Fix 2: Remove any problematic foreign key constraints
+    
     try {
         $conn->query("ALTER TABLE games DROP FOREIGN KEY fk_developer");
         $messages[] = "Removed existing foreign key constraint";
@@ -28,11 +28,11 @@ try {
         $messages[] = "No foreign key constraint to remove (this is fine)";
     }
 
-    // Fix 3: ONLY update games that were created by this specific developer
-    // We'll check if there are games without developer_id that might belong to this developer
+    
+    
     $developer_id = $_SESSION['developer_id'];
     
-    // Check how many games don't have a developer_id
+    
     $orphan_check = $conn->query("SELECT COUNT(*) as count FROM games WHERE developer_id IS NULL");
     $orphan_count = $orphan_check->fetch_assoc()['count'];
     
@@ -44,7 +44,7 @@ try {
         $messages[] = "All games already have proper developer assignment";
     }
 
-    // Fix 4: Verify developer session data
+    
     $dev_stmt = $conn->prepare("SELECT username, company_name FROM developers WHERE id = ?");
     $dev_stmt->bind_param("i", $developer_id);
     $dev_stmt->execute();
@@ -60,7 +60,7 @@ try {
     }
     $dev_stmt->close();
 
-    // Fix 5: Create assets/game_images directory if it doesn't exist
+    
     $assets_dir = __DIR__ . '/../assets/game_images/';
     if (!is_dir($assets_dir)) {
         if (mkdir($assets_dir, 0755, true)) {
@@ -136,7 +136,6 @@ $conn->close();
                 </div>
             <?php endif; ?>
 
-            <!-- Important Notice -->
             <div class="mb-6 p-4 bg-yellow-100 border border-yellow-400 text-yellow-800 rounded-lg">
                 <div class="flex items-start">
                     <i class="fas fa-info-circle mr-2 mt-1"></i>

@@ -83,12 +83,12 @@ session_start();
 </head>
 
 <body class="bg-gradient-to-br from-[#FFF7AD] to-[#FFA9F9] min-h-screen flex flex-col">
-    <!-- Main Cloud Background - Full screen behind everything -->
+    
     <img src="./assets/cloud.svg" alt="Background Cloud" class="bg-main-cloud"/>
     
-    <!-- Background SVG Assets - Always behind everything -->
+    
     <div class="fixed inset-0 overflow-hidden">
-        <!-- Navigation decorations -->
+        
         <img
             src="./assets/vine-left.svg"
             alt="Top-left decoration"
@@ -109,8 +109,8 @@ session_start();
             id="wheat"
         />
         
-        <!-- Main content decorations with GSAP animation classes -->
-        <!-- Back Mountain (comes from right) -->
+        
+        
         <img src="./assets/mountain.svg" alt="Mountain decoration" 
              class="bg-asset
                     w-[800px] h-auto bottom-[20px] -right-[120px]
@@ -119,7 +119,7 @@ session_start();
                     opacity-70 animate-mountain-back"
              id="mountain-back"/>
 
-        <!-- Front Mountain (comes from bottom) -->
+        
         <img src="./assets/mountain.svg" alt="Mountain decoration" 
              class="bg-asset -z-13
                     w-[600px] h-auto -bottom-[40px] -right-[70px]
@@ -128,7 +128,7 @@ session_start();
                     opacity-100 animate-mountain-front"
              id="mountain-front"/>
         
-        <!-- Sakura (comes from left) -->
+        
         <img src="./assets/sakura.svg" alt="Sakura decoration" 
              class="bg-asset -z-11
                     w-[1000px] h-auto -left-[80px] bottom-[20px]
@@ -137,7 +137,7 @@ session_start();
                     opacity-50 animate-sakura"
              id="sakura"/>
     
-        <!-- Tree (comes from bottom) -->
+        
         <img src="./assets/tree.svg" alt="Tree decoration" 
              class="bg-asset
                     w-[600px] h-auto -bottom-[20px] -left-[50px]
@@ -146,7 +146,7 @@ session_start();
                     opacity-100 animate-tree"
              id="tree"/>
     
-        <!-- Sun (comes from bottom with scale) -->
+        
         <img src="./assets/sun.svg" alt="Sun decoration" 
              class="bg-asset 
                     w-[1200px] h-auto -bottom-[50px] -right-[120px]
@@ -156,14 +156,14 @@ session_start();
              id="sun"/>
     </div>
 
-    <!-- Navigation -->
+    
     <nav class="nav-layer flex items-center justify-between p-4 lg:p-8">
         <div class="flex items-center space-x-3 opacity-0">
             <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-10 h-10 lg:w-12 lg:h-12"/>
             <h1 class="text-2xl lg:text-3xl font-bold text-pink-600 apply-custom-title-font">Aperior</h1>
         </div>
 
-        <!-- Desktop Navigation -->
+        
         <div class="hidden md:flex items-center space-x-6">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Browse Games</a>
@@ -184,7 +184,7 @@ session_start();
                 <a href="./catalogue/index.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Browse Games</a>
                 <a href="./login.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Login</a>
                 <a href="./register.php" class="text-pink-600 hover:text-pink-800 hover:underline text-sm lg:text-base">Register</a>
-                <!-- Developer Login Link -->
+                
                 <div class="relative group">
                     <a href="./developer/login.php" class="text-purple-600 hover:text-purple-800 hover:underline text-sm lg:text-base font-medium flex items-center">
                         <i class="fas fa-code mr-1"></i>Developer
@@ -193,14 +193,14 @@ session_start();
             <?php endif; ?>
         </div>
 
-        <!-- Mobile Menu Button -->
+        
         <button id="mobileMenuBtn" class="md:hidden text-pink-600 hover:text-pink-800">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </button>
 
-        <!-- Mobile Menu -->
+        
         <div id="mobileMenu" class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg rounded-lg mx-4 mt-2 py-4 px-6 space-y-3 hidden md:hidden z-30">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="./catalogue/index.php" class="block text-pink-600 hover:text-pink-800 hover:underline text-sm md:text-base text-left">Browse Games</a>
@@ -231,10 +231,10 @@ session_start();
         </div>
     </nav>
 
-    <!-- Main Content -->
+    
     <div class="content-layer flex-1 flex items-center justify-center px-4 lg:px-8 -mt-16 lg:-mt-20">
         <div class="max-w-4xl mx-auto text-center">
-            <!-- Hero Content -->
+            
             <div class="mb-8 lg:mb-12">
                 <img src="./assets/aperior.svg" alt="Aperior Logo" class="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-6"/>
                 <h1 class="text-4xl lg:text-6xl font-bold text-pink-600 mb-4 lg:mb-6 apply-custom-title-font">
@@ -246,7 +246,7 @@ session_start();
                 </p>
             </div>
 
-            <!-- Action Buttons -->
+            
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="./catalogue/index.php" 
@@ -278,7 +278,7 @@ session_start();
                 <?php endif; ?>
             </div>
 
-            <!-- Developer Section -->
+            
             <?php if (!isset($_SESSION['user_id']) && !isset($_SESSION['developer_id'])): ?>
                 <div class="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-purple-200 mb-12">
                     <h3 class="text-xl font-bold text-purple-600 mb-3">Are you a Game Developer?</h3>
@@ -296,7 +296,7 @@ session_start();
                 </div>
             <?php endif; ?>
 
-            <!-- Features -->
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 opacity-0">
                 <div class="bg-white/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -332,7 +332,7 @@ session_start();
     </div>
 
     <script>
-        // Mobile menu toggle
+        
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
 
@@ -340,14 +340,14 @@ session_start();
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Close mobile menu when clicking outside
+        
         document.addEventListener('click', (e) => {
             if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
                 mobileMenu.classList.add('hidden');
             }
         });
 
-        // Add Font Awesome for icons
+        
         if (!document.querySelector('link[href*="font-awesome"]')) {
             const fontAwesome = document.createElement('link');
             fontAwesome.rel = 'stylesheet';
@@ -355,12 +355,12 @@ session_start();
             document.head.appendChild(fontAwesome);
         }
 
-        // GSAP Animation Timeline - Faster and Smoother
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Create timeline for sequential animations with faster timing
+            
             const tl = gsap.timeline({ delay: 0.2 });
 
-            // 1. Front mountain and tree come up from bottom together (first layer)
+            
             tl.to("#mountain-front", {
                 duration: 0.8,
                 y: 0,
@@ -372,16 +372,16 @@ session_start();
                 y: 0,
                 opacity: 1,
                 ease: "power2.out"
-            }, "<") // Start at same time as mountain-front
+            }, "<") //
 
-            // 2. Sakura comes from left and back mountain from right (simultaneously)
+            
             .to("#sakura", {
                 duration: 0.7,
                 x: 0,
                 y: 0,
                 opacity: 0.5,
                 ease: "power2.out"
-            }, "-=0.6") // Start before previous animations finish
+            }, "-=0.6") 
 
             .to("#mountain-back", {
                 duration: 0.7,
@@ -389,21 +389,21 @@ session_start();
                 y: 0,
                 opacity: 0.7,
                 ease: "power2.out"
-            }, "<") // Start at same time as sakura
+            }, "<") 
 
-            // 3. Sun comes up from bottom last with scaling effect
+            
             .to("#sun", {
                 duration: 1,
                 y: 0,
                 scale: 1,
                 opacity: 1,
                 ease: "back.out(1.7)",
-                rotation: 25 // Maintain the rotation while animating
-            }, "-=0.4"); // Start before previous animations finish
+                rotation: 25 
+            }, "-=0.4"); 
 
-            // Add subtle continuous animations after initial sequence
+            
             tl.call(() => {
-                // Gentle floating animation for sun
+                
                 gsap.to("#sun", {
                     duration: 4,
                     y: "+=15",
@@ -412,7 +412,7 @@ session_start();
                     ease: "sine.inOut"
                 });
 
-                // Slower continuous rotation for sun
+                
                 gsap.to("#sun", {
                     duration: 75,
                     rotation: "+=360",

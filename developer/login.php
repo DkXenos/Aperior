@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['developer_username'] = $developer['username'];
                 $_SESSION['company_name'] = $developer['company_name'];
                 
-                // Redirect with success
+                
                 $_SESSION['success_message'] = "Welcome back, " . $developer['company_name'] . "!";
                 header("Location: dashboard.php");
                 exit();

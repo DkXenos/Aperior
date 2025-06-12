@@ -2,7 +2,7 @@
 session_start();
 require 'db_connect.php';
 
-// Enable error reporting for debugging
+//
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -23,7 +23,7 @@ $friend_id = isset($_POST['friend_id']) ? (int)$_POST['friend_id'] : 0;
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $game_id = isset($_POST['game_id']) ? (int)$_POST['game_id'] : 0;
 
-// Debug: Log the received data
+
 error_log("Gift Debug: user_id=$user_id, friend_id=$friend_id, action=$action, game_id=$game_id");
 
 if ($friend_id <= 0 || $friend_id == $user_id) {
@@ -32,7 +32,7 @@ if ($friend_id <= 0 || $friend_id == $user_id) {
 }
 
 try {
-    // First, let's check if the required tables exist
+    
     $tables_check = $conn->query("SHOW TABLES LIKE 'friends'");
     if ($tables_check->num_rows == 0) {
         echo json_encode(['success' => false, 'message' => 'Friends table does not exist. Please create it first.']);
@@ -46,7 +46,7 @@ try {
     }
 
     if ($action === 'add') {
-        // Check if friendship already exists
+        
         $check_stmt = $conn->prepare("
             SELECT id FROM friends 
             WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)
@@ -58,7 +58,7 @@ try {
         if ($existing->num_rows > 0) {
             echo json_encode(['success' => false, 'message' => 'Friendship already exists.']);
         } else {
-            // Add new friendship (automatically accepted for simplicity)
+            
             $stmt = $conn->prepare("INSERT INTO friends (user_id, friend_id, status) VALUES (?, ?, 'accepted')");
             $stmt->bind_param("ii", $user_id, $friend_id);
             
@@ -72,7 +72,7 @@ try {
         $check_stmt->close();
         
     } elseif ($action === 'remove') {
-        // Remove friendship (both directions)
+        
         $stmt = $conn->prepare("
             DELETE FROM friends 
             WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)
@@ -96,7 +96,7 @@ try {
             exit();
         }
         
-        // Check if user owns the game
+        
         $check_ownership = $conn->prepare("SELECT id FROM user_inventory WHERE user_id = ? AND game_id = ?");
         if (!$check_ownership) {
             echo json_encode(['success' => false, 'message' => 'Database error: ' . $conn->error]);
@@ -114,7 +114,7 @@ try {
         }
         $check_ownership->close();
         
-        // Check if friend already owns the game
+        
         $check_friend_ownership = $conn->prepare("SELECT id FROM user_inventory WHERE user_id = ? AND game_id = ?");
         $check_friend_ownership->bind_param("ii", $friend_id, $game_id);
         $check_friend_ownership->execute();
@@ -127,7 +127,7 @@ try {
         }
         $check_friend_ownership->close();
         
-        // Check if they are actually friends
+        
         $check_friendship = $conn->prepare("
             SELECT id FROM friends 
             WHERE ((user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)) 
@@ -144,12 +144,12 @@ try {
         }
         $check_friendship->close();
         
-        // Add the game to friend's inventory
+        
         $gift_stmt = $conn->prepare("INSERT INTO user_inventory (user_id, game_id, purchase_date) VALUES (?, ?, NOW())");
         $gift_stmt->bind_param("ii", $friend_id, $game_id);
         
         if ($gift_stmt->execute()) {
-            // Get the game title for the response
+            
             $game_title_stmt = $conn->prepare("SELECT title FROM games WHERE id = ?");
             $game_title_stmt->bind_param("i", $game_id);
             $game_title_stmt->execute();
